@@ -1,5 +1,4 @@
 import { api } from '../../../frontend/src/api';
-import { Task, TaskCreate } from '../../../frontend/src/api';
 
 describe('api.createTask', () => {
   const originalFetch = global.fetch;
@@ -25,251 +24,274 @@ describe('api.createTask', () => {
       Promise.resolve({
         ok: false,
         status,
-        json: () => Promise.resolve({ error: message }),
+        json: () => Promise.resolve({ error_message: message, status: 'error' }),
       })
     );
   }
 
   function mockFetchNetworkError() {
-    global.fetch = jest.fn().mockImplementation(() => Promise.reject(new Error('Network error or request failed')));
+    global.fetch = jest.fn().mockImplementation(() => Promise.reject(new Error('Network error')));
   }
 
-  // Test Case 1: Create task with all valid fields
-  it('Create task with all valid fields', async () => {
-    const input: TaskCreate = {
-      title: 'Complete documentation',
-      description: 'Finish the API documentation for the project',
-      due_date: '2024-07-01T12:00:00Z',
-      priority: 'High',
-      completed: false,
+  // Test Case 1: Create Task with All Valid Fields
+  it('Create Task with All Valid Fields', async () => {
+    const input = {
+      description: 'Purchase milk, eggs, and bread',
+      due_date: '2024-07-15T17:00:00Z',
+      priority: 'high',
+      title: 'Buy groceries',
+      user_name: 'alice',
     };
-    const expected: Task = {
-      ...input,
-      id: 'generated_task_id',
+    const expected = {
+      created_task: {
+        ...input,
+        id: 'generated_task_id',
+      },
+      status: 'success',
     };
     mockFetch(expected);
     const result = await api.createTask(input);
     expect(result).toEqual(expected);
   });
 
-  // Test Case 2: Create task missing title
-  it('Create task missing title', async () => {
-    const input: any = {
-      description: 'Finish the API documentation for the project',
-      due_date: '2024-07-01T12:00:00Z',
-      priority: 'High',
-      completed: false,
+  // Test Case 2: Create Task with Missing Title
+  it('Create Task with Missing Title', async () => {
+    const input = {
+      description: 'Complete assignment',
+      due_date: '2024-07-10T12:00:00Z',
+      priority: 'medium',
+      user_name: 'bob',
     };
-    mockFetchError('Missing required field: title');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    mockFetchError('Title is required');
+    await expect(api.createTask(input)).rejects.toThrow('Title is required');
   });
 
-  // Test Case 3: Create task missing description
-  it('Create task missing description', async () => {
-    const input: any = {
-      title: 'Complete documentation',
-      due_date: '2024-07-01T12:00:00Z',
-      priority: 'High',
-      completed: false,
+  // Test Case 3: Create Task with Missing Description
+  it('Create Task with Missing Description', async () => {
+    const input = {
+      due_date: '2024-07-20T15:00:00Z',
+      priority: 'low',
+      title: 'Read book',
+      user_name: 'carol',
     };
-    mockFetchError('Missing required field: description');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    mockFetchError('Description is required');
+    await expect(api.createTask(input)).rejects.toThrow('Description is required');
   });
 
-  // Test Case 4: Create task missing priority
-  it('Create task missing priority', async () => {
-    const input: any = {
-      title: 'Complete documentation',
-      description: 'Finish the API documentation for the project',
-      due_date: '2024-07-01T12:00:00Z',
-      completed: false,
+  // Test Case 4: Create Task with Missing Priority
+  it('Create Task with Missing Priority', async () => {
+    const input = {
+      description: 'Evening walk in the park',
+      due_date: '2024-07-10T18:00:00Z',
+      title: 'Walk dog',
+      user_name: 'dave',
     };
-    mockFetchError('Missing required field: priority');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    mockFetchError('Priority is required');
+    await expect(api.createTask(input)).rejects.toThrow('Priority is required');
   });
 
-  // Test Case 5: Create task missing due_date
-  it('Create task missing due_date', async () => {
-    const input: any = {
-      title: 'Complete documentation',
-      description: 'Finish the API documentation for the project',
-      priority: 'High',
-      completed: false,
+  // Test Case 5: Create Task with Missing Due Date
+  it('Create Task with Missing Due Date', async () => {
+    const input = {
+      description: 'Book tickets and hotels',
+      priority: 'high',
+      title: 'Plan trip',
+      user_name: 'eve',
     };
-    mockFetchError('Missing required field: due_date');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    mockFetchError('Due date is required');
+    await expect(api.createTask(input)).rejects.toThrow('Due date is required');
   });
 
-  // Test Case 6: Create task missing user_name
-  it('Create task missing user_name', async () => {
-    const input: any = {
-      title: 'Complete documentation',
-      description: 'Finish the API documentation for the project',
-      due_date: '2024-07-01T12:00:00Z',
-      priority: 'High',
-      completed: false,
+  // Test Case 6: Create Task with Missing User Name
+  it('Create Task with Missing User Name', async () => {
+    const input = {
+      description: 'Yearly financial report',
+      due_date: '2024-07-30T09:00:00Z',
+      priority: 'medium',
+      title: 'Submit report',
     };
-    mockFetchError('Missing required field: user_name');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    mockFetchError('User name is required');
+    await expect(api.createTask(input)).rejects.toThrow('User name is required');
   });
 
-  // Test Case 7: Create task with empty title
-  it('Create task with empty title', async () => {
-    const input: TaskCreate = {
+  // Test Case 7: Create Task with Empty Title
+  it('Create Task with Empty Title', async () => {
+    const input = {
+      description: 'Go jogging',
+      due_date: '2024-07-22T06:30:00Z',
+      priority: 'low',
       title: '',
-      description: 'Finish the API documentation for the project',
-      due_date: '2024-07-01T12:00:00Z',
-      priority: 'High',
-      completed: false,
+      user_name: 'frank',
     };
     mockFetchError('Title cannot be empty');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    await expect(api.createTask(input)).rejects.toThrow('Title cannot be empty');
   });
 
-  // Test Case 8: Create task with empty description
-  it('Create task with empty description', async () => {
-    const input: TaskCreate = {
-      title: 'Complete documentation',
+  // Test Case 8: Create Task with Empty Description
+  it('Create Task with Empty Description', async () => {
+    const input = {
       description: '',
-      due_date: '2024-07-01T12:00:00Z',
-      priority: 'High',
-      completed: false,
+      due_date: '2024-07-22T06:30:00Z',
+      priority: 'medium',
+      title: 'Exercise',
+      user_name: 'grace',
     };
     mockFetchError('Description cannot be empty');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    await expect(api.createTask(input)).rejects.toThrow('Description cannot be empty');
   });
 
-  // Test Case 9: Create task with invalid priority
-  it('Create task with invalid priority', async () => {
-    const input: any = {
-      title: 'Complete documentation',
-      description: 'Finish the API documentation for the project',
-      due_date: '2024-07-01T12:00:00Z',
+  // Test Case 9: Create Task with Invalid Priority
+  it('Create Task with Invalid Priority', async () => {
+    const input = {
+      description: 'Prepare for exam',
+      due_date: '2024-07-25T08:00:00Z',
       priority: 'urgent',
-      completed: false,
+      title: 'Study',
+      user_name: 'henry',
     };
-    mockFetchError('Invalid value for field: priority');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    mockFetchError('Invalid priority value');
+    await expect(api.createTask(input)).rejects.toThrow('Invalid priority value');
   });
 
-  // Test Case 10: Create task with invalid due_date format
-  it('Create task with invalid due_date format', async () => {
-    const input: TaskCreate = {
-      title: 'Complete documentation',
-      description: 'Finish the API documentation for the project',
-      due_date: '07/01/2024 12:00',
-      priority: 'High',
-      completed: false,
-    };
-    mockFetchError('Invalid format for field: due_date');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
-  });
-
-  // Test Case 11: Create task with due_date in the past
-  it('Create task with due_date in the past', async () => {
-    const input: TaskCreate = {
-      title: 'Complete documentation',
-      description: 'Finish the API documentation for the project',
-      due_date: '2022-01-01T00:00:00Z',
-      priority: 'High',
-      completed: false,
+  // Test Case 10: Create Task with Due Date in the Past
+  it('Create Task with Due Date in the Past', async () => {
+    const input = {
+      description: 'This due date is in the past',
+      due_date: '2020-01-01T00:00:00Z',
+      priority: 'low',
+      title: 'Past task',
+      user_name: 'irene',
     };
     mockFetchError('Due date cannot be in the past');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    await expect(api.createTask(input)).rejects.toThrow('Due date cannot be in the past');
   });
 
-  // Test Case 12: Create task with maximum length title
-  it('Create task with maximum length title', async () => {
+  // Test Case 11: Create Task with Maximum Length Title and Description
+  it('Create Task with Maximum Length Title and Description', async () => {
     const maxTitle = 'T'.repeat(255);
-    const input: TaskCreate = {
+    const maxDesc = 'D'.repeat(1024);
+    const input = {
+      description: maxDesc,
+      due_date: '2024-08-01T12:00:00Z',
+      priority: 'medium',
       title: maxTitle,
-      description: 'Finish the API documentation for the project',
-      due_date: '2024-07-01T12:00:00Z',
-      priority: 'High',
-      completed: false,
+      user_name: 'julie',
     };
-    const expected: Task = {
-      ...input,
-      id: 'generated_task_id',
+    const expected = {
+      created_task: {
+        ...input,
+        id: 'generated_task_id',
+      },
+      status: 'success',
     };
     mockFetch(expected);
     const result = await api.createTask(input);
     expect(result).toEqual(expected);
   });
 
-  // Test Case 13: Create task with title exceeding maximum length
-  it('Create task with title exceeding maximum length', async () => {
+  // Test Case 12: Create Task with Title Exceeding Maximum Length
+  it('Create Task with Title Exceeding Maximum Length', async () => {
     const longTitle = 'T'.repeat(256);
-    const input: TaskCreate = {
+    const input = {
+      description: 'Short description',
+      due_date: '2024-08-02T15:00:00Z',
+      priority: 'medium',
       title: longTitle,
-      description: 'Finish the API documentation for the project',
-      due_date: '2024-07-01T12:00:00Z',
-      priority: 'High',
-      completed: false,
+      user_name: 'katie',
     };
     mockFetchError('Title exceeds maximum length');
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    await expect(api.createTask(input)).rejects.toThrow('Title exceeds maximum length');
   });
 
-  // Test Case 14: Create task with duplicate request
-  it('Create task with duplicate request', async () => {
-    const input: TaskCreate = {
-      title: 'Prepare slides',
-      description: 'Prepare slides for the meeting',
-      due_date: '2024-07-02T12:00:00Z',
-      priority: 'Medium',
-      completed: false,
+  // Test Case 13: Create Task with Description Exceeding Maximum Length
+  it('Create Task with Description Exceeding Maximum Length', async () => {
+    const longDesc = 'D'.repeat(1025);
+    const input = {
+      description: longDesc,
+      due_date: '2024-08-02T15:00:00Z',
+      priority: 'medium',
+      title: 'Short title',
+      user_name: 'leo',
     };
-    // Simulate backend allows duplicate, returns new id
-    const firstResult: Task = { ...input, id: 'generated_task_id_1' };
-    const secondResult: Task = { ...input, id: 'generated_task_id_2' };
-    let callCount = 0;
-    global.fetch = jest.fn().mockImplementation(() => {
-      callCount++;
-      return Promise.resolve({
-        ok: true,
-        status: 201,
-        json: () => Promise.resolve(callCount === 1 ? firstResult : secondResult),
-      });
-    });
-    const resultFirstCall = await api.createTask(input);
-    const resultSecondCall = await api.createTask(input);
-    expect(resultFirstCall).toEqual(firstResult);
-    expect(resultSecondCall).toEqual(secondResult);
-    // Simulate backend returns duplicate error
-    global.fetch = jest.fn().mockImplementation(() =>
-      Promise.resolve({
-        ok: false,
-        status: 409,
-        json: () => Promise.resolve({ error: 'Duplicate task' }),
-      })
-    );
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    mockFetchError('Description exceeds maximum length');
+    await expect(api.createTask(input)).rejects.toThrow('Description exceeds maximum length');
   });
 
-  // Test Case 15: Create task with network failure
-  it('Create task with network failure', async () => {
-    const input: TaskCreate = {
-      title: 'Submit report',
-      description: 'Submit the final report',
-      due_date: '2024-07-03T12:00:00Z',
-      priority: 'Low',
-      completed: false,
+  // Test Case 14: Create Task with User Name as Whitespace String
+  it('Create Task with User Name as Whitespace String', async () => {
+    const input = {
+      description: 'Vacuum and dust',
+      due_date: '2024-08-05T16:00:00Z',
+      priority: 'low',
+      title: 'Clean house',
+      user_name: '    ',
     };
-    mockFetchNetworkError();
-    await expect(api.createTask(input)).rejects.toThrow('Network error or request failed');
+    mockFetchError('User name cannot be empty');
+    await expect(api.createTask(input)).rejects.toThrow('User name cannot be empty');
   });
 
-  // Test Case 16: Create task with backend error
-  it('Create task with backend error', async () => {
-    const input: TaskCreate = {
-      title: 'Submit report',
-      description: 'Submit the final report',
-      due_date: '2024-07-03T12:00:00Z',
-      priority: 'Low',
-      completed: false,
+  // Test Case 15: Create Task with Valid Data but Server Error
+  it('Create Task with Valid Data but Server Error', async () => {
+    const input = {
+      description: 'Resolve production issue',
+      due_date: '2024-08-10T09:00:00Z',
+      priority: 'high',
+      title: 'Fix bug',
+      user_name: 'mike',
     };
     mockFetchError('Internal server error', 500);
-    await expect(api.createTask(input)).rejects.toThrow('Failed to create task');
+    await expect(api.createTask(input)).rejects.toThrow('Internal server error');
+  });
+
+  // Test Case 16: Create Task with Network Failure
+  it('Create Task with Network Failure', async () => {
+    const input = {
+      description: 'Upload important documents',
+      due_date: '2024-08-11T20:00:00Z',
+      priority: 'medium',
+      title: 'Backup files',
+      user_name: 'nora',
+    };
+    mockFetchNetworkError();
+    await expect(api.createTask(input)).rejects.toThrow('Network error');
+  });
+
+  // Test Case 17: Create Task with Duplicate Title
+  it('Create Task with Duplicate Title', async () => {
+    const input = {
+      description: 'Summarize weekly progress',
+      due_date: '2024-08-12T18:00:00Z',
+      priority: 'low',
+      title: 'Weekly review',
+      user_name: 'oliver',
+    };
+    mockFetchError('A task with this title already exists', 409);
+    await expect(api.createTask(input)).rejects.toThrow('A task with this title already exists');
+  });
+
+  // Test Case 18: Create Task with Additional Unexpected Fields
+  it('Create Task with Additional Unexpected Fields', async () => {
+    const input = {
+      description: 'Sort documents into folders',
+      due_date: '2024-08-13T10:00:00Z',
+      extra_field: 'should be ignored',
+      priority: 'medium',
+      title: 'Organize files',
+      user_name: 'pam',
+    };
+    const expected = {
+      created_task: {
+        description: 'Sort documents into folders',
+        due_date: '2024-08-13T10:00:00Z',
+        priority: 'medium',
+        title: 'Organize files',
+        user_name: 'pam',
+        id: 'generated_task_id',
+      },
+      status: 'success',
+    };
+    mockFetch(expected);
+    const result = await api.createTask(input);
+    expect(result).toEqual(expected);
   });
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { TaskForm } from '../../../frontend/src/components/TaskForm';
-import type { Task, TaskCreate } from '../../../frontend/src/api';
+import type { Task } from '../../../frontend/src/api';
 
 describe('TaskForm (Edit Mode)', () => {
   const initialTask: Task = {
@@ -10,9 +10,8 @@ describe('TaskForm (Edit Mode)', () => {
     title: 'Initial Title',
     description: 'Initial Description',
     priority: 'Medium',
-    category: 'Work',
     due_date: '2026-03-10',
-    completed: false,
+    user_name: 'Alice',
   };
 
   const otherTask: Task = {
@@ -20,9 +19,8 @@ describe('TaskForm (Edit Mode)', () => {
     title: 'Other Task',
     description: 'Other Description',
     priority: 'Low',
-    category: 'Personal',
     due_date: '2026-03-11',
-    completed: false,
+    user_name: 'Bob',
   };
 
   let onSubmit: jest.Mock;
@@ -39,17 +37,16 @@ describe('TaskForm (Edit Mode)', () => {
     fireEvent.change(screen.getByLabelText(/Title/i), { target: { value: 'New Title' } });
     fireEvent.change(screen.getByLabelText(/Description/i), { target: { value: 'New Description' } });
     fireEvent.change(screen.getByLabelText(/Priority/i), { target: { value: 'High' } });
-    fireEvent.change(screen.getByLabelText(/Category/i), { target: { value: 'Personal' } });
     fireEvent.change(screen.getByLabelText(/Due Date/i), { target: { value: '2026-03-20' } });
+    fireEvent.change(screen.getByLabelText(/User_name/i), { target: { value: 'Charlie' } });
     fireEvent.click(screen.getByText(/Save Task/i));
     await waitFor(() =>
       expect(onSubmit).toHaveBeenCalledWith({
         title: 'New Title',
         description: 'New Description',
         priority: 'High',
-        category: 'Personal',
         due_date: '2026-03-20',
-        completed: false,
+        user_name: 'Charlie',
       })
     );
   });
@@ -65,9 +62,8 @@ describe('TaskForm (Edit Mode)', () => {
         title: 'Changed Title',
         description: 'Initial Description',
         priority: 'Low',
-        category: 'Work',
         due_date: '2026-03-10',
-        completed: false,
+        user_name: 'Alice',
       })
     );
   });
@@ -81,13 +77,11 @@ describe('TaskForm (Edit Mode)', () => {
         title: 'Initial Title',
         description: 'Initial Description',
         priority: 'Medium',
-        category: 'Work',
         due_date: '2026-03-10',
-        completed: false,
+        user_name: 'Alice',
       })
     );
-    // Simulate message display (would require implementation in TaskForm)
-    // expect(screen.getByText(/no update was performed/i)).toBeInTheDocument();
+    expect(screen.getByText(/no update was performed/i)).toBeInTheDocument();
   });
 
   // Test Case 4: Submit with some fields missing in payload
@@ -99,11 +93,10 @@ describe('TaskForm (Edit Mode)', () => {
     await waitFor(() =>
       expect(onSubmit).toHaveBeenCalledWith({
         title: 'Cleared Title',
-        description: undefined,
+        description: '',
         priority: 'Medium',
-        category: 'Work',
         due_date: '2026-03-10',
-        completed: false,
+        user_name: 'Alice',
       })
     );
   });
@@ -111,9 +104,12 @@ describe('TaskForm (Edit Mode)', () => {
   // Test Case 5: Attempt to edit a non-existent task
   it('Attempt to edit a non-existent task', () => {
     render(<TaskForm initialTask={undefined} onSubmit={onSubmit} onCancel={onCancel} />);
-    expect(screen.getByText(/Add New Task/i)).toBeInTheDocument();
-    // If invalid ID, simulate error (would require implementation in TaskForm)
-    // expect(screen.getByText(/task does not exist/i)).toBeInTheDocument();
+    expect(screen.getByText(/task does not exist/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/Title/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/Description/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/Priority/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/Due Date/i)).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/User_name/i)).not.toBeInTheDocument();
   });
 
   // Test Case 6: Form pre-fills with initialTask data in edit mode
@@ -122,8 +118,8 @@ describe('TaskForm (Edit Mode)', () => {
     expect(screen.getByLabelText(/Title/i)).toHaveValue('Initial Title');
     expect(screen.getByLabelText(/Description/i)).toHaveValue('Initial Description');
     expect(screen.getByLabelText(/Priority/i)).toHaveValue('Medium');
-    expect(screen.getByLabelText(/Category/i)).toHaveValue('Work');
     expect(screen.getByLabelText(/Due Date/i)).toHaveValue('2026-03-10');
+    expect(screen.getByLabelText(/User_name/i)).toHaveValue('Alice');
   });
 
   // Test Case 7: State updates on input change
@@ -149,7 +145,7 @@ describe('TaskForm (Edit Mode)', () => {
     fireEvent.click(screen.getByText(/Save Task/i));
     await waitFor(() => {
       expect(onSubmit).not.toHaveBeenCalled();
-      // expect(screen.getByText(/title is required/i)).toBeInTheDocument();
+      expect(screen.getByText(/title is required/i)).toBeInTheDocument();
     });
   });
 
@@ -163,12 +159,10 @@ describe('TaskForm (Edit Mode)', () => {
         title: 'Task A Updated',
         description: 'Initial Description',
         priority: 'Medium',
-        category: 'Work',
         due_date: '2026-03-10',
-        completed: false,
+        user_name: 'Alice',
       })
     );
-    // Simulate that otherTask is not affected (would require integration test)
     expect(otherTask.title).toBe('Other Task');
   });
 
@@ -191,9 +185,8 @@ describe('TaskForm (Edit Mode)', () => {
 
   // Test Case 13: User_name field is pre-filled with initialTask value
   it('User_name field is pre-filled with initialTask value', () => {
-    // User_name is not present in TaskForm, but if it were:
-    // expect(screen.getByLabelText(/User_name/i)).toHaveValue(initialTask.user_name);
-    // For now, skip as not implemented in TaskForm.
+    render(<TaskForm initialTask={initialTask} onSubmit={onSubmit} onCancel={onCancel} />);
+    expect(screen.getByLabelText(/User_name/i)).toHaveValue('Alice');
   });
 
   // Test Case 14: Submitting with invalid due date shows error
@@ -203,7 +196,7 @@ describe('TaskForm (Edit Mode)', () => {
     fireEvent.click(screen.getByText(/Save Task/i));
     await waitFor(() => {
       expect(onSubmit).not.toHaveBeenCalled();
-      // expect(screen.getByText(/due date validation error/i)).toBeInTheDocument();
+      expect(screen.getByText(/due date validation error/i)).toBeInTheDocument();
     });
   });
 
