@@ -411,7 +411,8 @@
           },
           "type": "edge"
         }
-      ]
+      ],
+      "test_path": ".codevalid/tests/task_5910273648_20240609123001/frontend_create_task_api_function.ts"
     },
     {
       "implementation_id": "backend_add_task_function",
@@ -890,7 +891,8 @@
           },
           "type": "negative"
         }
-      ]
+      ],
+      "test_path": ".codevalid/tests/task_5910273648_20240609123001/backend_add_task_function.py"
     },
     {
       "implementation_id": "backend_update_task_function",
@@ -1432,7 +1434,8 @@
           },
           "type": "negative"
         }
-      ]
+      ],
+      "test_path": ".codevalid/tests/task_5910273648_20240609123001/ui_task_form_component.ts"
     },
     {
       "implementation_id": "ui_taskitem_edit_button",
@@ -2347,7 +2350,8 @@
           },
           "type": "edge"
         }
-      ]
+      ],
+      "test_path": ".codevalid/tests/task_5910273648_20240609123001/backend_create_task_endpoint.py"
     },
     {
       "implementation_id": "api_update_task_endpoint",
