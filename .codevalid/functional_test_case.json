@@ -5,367 +5,424 @@
       "test_cases": [
         {
           "description": "Verify that a task is successfully created when all required fields are provided with valid values.",
-          "id": "create_task_valid_all_fields",
+          "id": "create_task_success_all_fields_valid",
           "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with all valid fields",
+          "name": "Create Task with All Valid Fields",
           "test_setup": {
             "given": {
-              "description": "Finish the API documentation for the project",
-              "due_date": "2024-07-01T12:00:00Z",
+              "description": "Purchase milk, eggs, and bread",
+              "due_date": "2024-07-15T17:00:00Z",
               "priority": "high",
-              "title": "Complete documentation",
-              "user_name": "johndoe"
+              "title": "Buy groceries",
+              "user_name": "alice"
             },
             "then": {
-              "result": {
-                "description": "Finish the API documentation for the project",
-                "due_date": "2024-07-01T12:00:00Z",
+              "created_task": {
+                "description": "Purchase milk, eggs, and bread",
+                "due_date": "2024-07-15T17:00:00Z",
                 "id": "generated_task_id",
                 "priority": "high",
-                "title": "Complete documentation",
-                "user_name": "johndoe"
-              }
+                "title": "Buy groceries",
+                "user_name": "alice"
+              },
+              "status": "success"
             },
-            "when": "api.createTask is called with all valid fields"
+            "when": "api.createTask is called with all required fields"
           },
           "type": "positive"
         },
         {
-          "description": "Verify that task creation fails when the title field is missing.",
+          "description": "Verify that the function throws an error if the title field is missing.",
           "id": "create_task_missing_title",
           "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task missing title",
+          "name": "Create Task with Missing Title",
           "test_setup": {
             "given": {
-              "description": "Finish the API documentation for the project",
-              "due_date": "2024-07-01T12:00:00Z",
-              "priority": "high",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "error": "Missing required field: title"
-            },
-            "when": "api.createTask is called without the title field"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that task creation fails when the description field is missing.",
-          "id": "create_task_missing_description",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task missing description",
-          "test_setup": {
-            "given": {
-              "due_date": "2024-07-01T12:00:00Z",
-              "priority": "high",
-              "title": "Complete documentation",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "error": "Missing required field: description"
-            },
-            "when": "api.createTask is called without the description field"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that task creation fails when the priority field is missing.",
-          "id": "create_task_missing_priority",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task missing priority",
-          "test_setup": {
-            "given": {
-              "description": "Finish the API documentation for the project",
-              "due_date": "2024-07-01T12:00:00Z",
-              "title": "Complete documentation",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "error": "Missing required field: priority"
-            },
-            "when": "api.createTask is called without the priority field"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that task creation fails when the due_date field is missing.",
-          "id": "create_task_missing_due_date",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task missing due_date",
-          "test_setup": {
-            "given": {
-              "description": "Finish the API documentation for the project",
-              "priority": "high",
-              "title": "Complete documentation",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "error": "Missing required field: due_date"
-            },
-            "when": "api.createTask is called without the due_date field"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that task creation fails when the user_name field is missing.",
-          "id": "create_task_missing_user_name",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task missing user_name",
-          "test_setup": {
-            "given": {
-              "description": "Finish the API documentation for the project",
-              "due_date": "2024-07-01T12:00:00Z",
-              "priority": "high",
-              "title": "Complete documentation"
-            },
-            "then": {
-              "error": "Missing required field: user_name"
-            },
-            "when": "api.createTask is called without the user_name field"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that task creation fails if the title is provided as an empty string.",
-          "id": "create_task_empty_title",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with empty title",
-          "test_setup": {
-            "given": {
-              "description": "Finish the API documentation for the project",
-              "due_date": "2024-07-01T12:00:00Z",
-              "priority": "high",
-              "title": "",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "error": "Title cannot be empty"
-            },
-            "when": "api.createTask is called with an empty title"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that task creation fails if the description is provided as an empty string.",
-          "id": "create_task_empty_description",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with empty description",
-          "test_setup": {
-            "given": {
-              "description": "",
-              "due_date": "2024-07-01T12:00:00Z",
-              "priority": "high",
-              "title": "Complete documentation",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "error": "Description cannot be empty"
-            },
-            "when": "api.createTask is called with an empty description"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that task creation fails if the priority field contains an invalid value.",
-          "id": "create_task_invalid_priority",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with invalid priority",
-          "test_setup": {
-            "given": {
-              "description": "Finish the API documentation for the project",
-              "due_date": "2024-07-01T12:00:00Z",
-              "priority": "urgent",
-              "title": "Complete documentation",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "error": "Invalid value for field: priority"
-            },
-            "when": "api.createTask is called with an invalid priority value"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that task creation fails if the due_date field is not in ISO 8601 format.",
-          "id": "create_task_invalid_due_date_format",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with invalid due_date format",
-          "test_setup": {
-            "given": {
-              "description": "Finish the API documentation for the project",
-              "due_date": "07/01/2024 12:00",
-              "priority": "high",
-              "title": "Complete documentation",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "error": "Invalid format for field: due_date"
-            },
-            "when": "api.createTask is called with an invalid due_date format"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that task creation fails if the due_date is a past date.",
-          "id": "create_task_due_date_past",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with due_date in the past",
-          "test_setup": {
-            "given": {
-              "description": "Finish the API documentation for the project",
-              "due_date": "2022-01-01T00:00:00Z",
-              "priority": "high",
-              "title": "Complete documentation",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "error": "Due date cannot be in the past"
-            },
-            "when": "api.createTask is called with a due_date in the past"
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify task creation succeeds when the title is at its maximum allowed length.",
-          "id": "create_task_long_title",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with maximum length title",
-          "test_setup": {
-            "given": {
-              "description": "Finish the API documentation for the project",
-              "due_date": "2024-07-01T12:00:00Z",
-              "priority": "high",
-              "title": "T.repeat(255)",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "result": {
-                "description": "Finish the API documentation for the project",
-                "due_date": "2024-07-01T12:00:00Z",
-                "id": "generated_task_id",
-                "priority": "high",
-                "title": "T.repeat(255)",
-                "user_name": "johndoe"
-              }
-            },
-            "when": "api.createTask is called with a title of 255 characters"
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that task creation fails when the title exceeds the maximum allowed length.",
-          "id": "create_task_overlong_title",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with title exceeding maximum length",
-          "test_setup": {
-            "given": {
-              "description": "Finish the API documentation for the project",
-              "due_date": "2024-07-01T12:00:00Z",
-              "priority": "high",
-              "title": "T.repeat(256)",
-              "user_name": "johndoe"
-            },
-            "then": {
-              "error": "Title exceeds maximum length"
-            },
-            "when": "api.createTask is called with a title of 256 characters"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify the system behavior when the same task creation request is sent twice in quick succession.",
-          "id": "create_task_duplicate_request",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with duplicate request",
-          "test_setup": {
-            "given": {
-              "description": "Prepare slides for the meeting",
-              "due_date": "2024-07-02T12:00:00Z",
+              "description": "Complete assignment",
+              "due_date": "2024-07-10T12:00:00Z",
               "priority": "medium",
-              "title": "Prepare slides",
-              "user_name": "alice"
-            },
-            "then": {
-              "result_first_call": {
-                "description": "Prepare slides for the meeting",
-                "due_date": "2024-07-02T12:00:00Z",
-                "id": "generated_task_id_1",
-                "priority": "medium",
-                "title": "Prepare slides",
-                "user_name": "alice"
-              },
-              "result_second_call": "Either a duplicate task is created with a new id, or the system returns an error indicating a duplicate task, depending on backend implementation."
-            },
-            "when": "api.createTask is called twice with the same data"
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that the function properly throws an error when there is a network failure during the POST request.",
-          "id": "create_task_network_error",
-          "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with network failure",
-          "test_setup": {
-            "given": {
-              "description": "Submit the final report",
-              "due_date": "2024-07-03T12:00:00Z",
-              "priority": "low",
-              "title": "Submit report",
               "user_name": "bob"
             },
             "then": {
-              "error": "Network error or request failed"
+              "error_message": "Title is required",
+              "status": "error"
+            },
+            "when": "api.createTask is called with missing title"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the function throws an error if the description field is missing.",
+          "id": "create_task_missing_description",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Missing Description",
+          "test_setup": {
+            "given": {
+              "due_date": "2024-07-20T15:00:00Z",
+              "priority": "low",
+              "title": "Read book",
+              "user_name": "carol"
+            },
+            "then": {
+              "error_message": "Description is required",
+              "status": "error"
+            },
+            "when": "api.createTask is called with missing description"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the function throws an error if the priority field is missing.",
+          "id": "create_task_missing_priority",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Missing Priority",
+          "test_setup": {
+            "given": {
+              "description": "Evening walk in the park",
+              "due_date": "2024-07-10T18:00:00Z",
+              "title": "Walk dog",
+              "user_name": "dave"
+            },
+            "then": {
+              "error_message": "Priority is required",
+              "status": "error"
+            },
+            "when": "api.createTask is called with missing priority"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the function throws an error if the due_date field is missing.",
+          "id": "create_task_missing_due_date",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Missing Due Date",
+          "test_setup": {
+            "given": {
+              "description": "Book tickets and hotels",
+              "priority": "high",
+              "title": "Plan trip",
+              "user_name": "eve"
+            },
+            "then": {
+              "error_message": "Due date is required",
+              "status": "error"
+            },
+            "when": "api.createTask is called with missing due_date"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the function throws an error if the user_name field is missing.",
+          "id": "create_task_missing_user_name",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Missing User Name",
+          "test_setup": {
+            "given": {
+              "description": "Yearly financial report",
+              "due_date": "2024-07-30T09:00:00Z",
+              "priority": "medium",
+              "title": "Submit report"
+            },
+            "then": {
+              "error_message": "User name is required",
+              "status": "error"
+            },
+            "when": "api.createTask is called with missing user_name"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the function throws an error if the title is an empty string.",
+          "id": "create_task_empty_title",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Empty Title",
+          "test_setup": {
+            "given": {
+              "description": "Go jogging",
+              "due_date": "2024-07-22T06:30:00Z",
+              "priority": "low",
+              "title": "",
+              "user_name": "frank"
+            },
+            "then": {
+              "error_message": "Title cannot be empty",
+              "status": "error"
+            },
+            "when": "api.createTask is called with empty title"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the function throws an error if the description is an empty string.",
+          "id": "create_task_empty_description",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Empty Description",
+          "test_setup": {
+            "given": {
+              "description": "",
+              "due_date": "2024-07-22T06:30:00Z",
+              "priority": "medium",
+              "title": "Exercise",
+              "user_name": "grace"
+            },
+            "then": {
+              "error_message": "Description cannot be empty",
+              "status": "error"
+            },
+            "when": "api.createTask is called with empty description"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the function throws an error if the priority value is not recognized.",
+          "id": "create_task_invalid_priority",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Invalid Priority",
+          "test_setup": {
+            "given": {
+              "description": "Prepare for exam",
+              "due_date": "2024-07-25T08:00:00Z",
+              "priority": "urgent",
+              "title": "Study",
+              "user_name": "henry"
+            },
+            "then": {
+              "error_message": "Invalid priority value",
+              "status": "error"
+            },
+            "when": "api.createTask is called with invalid priority value"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the function throws an error if the due_date is set in the past.",
+          "id": "create_task_due_date_in_past",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Due Date in the Past",
+          "test_setup": {
+            "given": {
+              "description": "This due date is in the past",
+              "due_date": "2020-01-01T00:00:00Z",
+              "priority": "low",
+              "title": "Past task",
+              "user_name": "irene"
+            },
+            "then": {
+              "error_message": "Due date cannot be in the past",
+              "status": "error"
+            },
+            "when": "api.createTask is called with a past due_date"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the function accepts title and description at their maximum allowed length without error.",
+          "id": "create_task_long_title_description",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Maximum Length Title and Description",
+          "test_setup": {
+            "given": {
+              "description": "D.repeat(1024)",
+              "due_date": "2024-08-01T12:00:00Z",
+              "priority": "medium",
+              "title": "T.repeat(255)",
+              "user_name": "julie"
+            },
+            "then": {
+              "created_task": {
+                "description": "D.repeat(1024)",
+                "due_date": "2024-08-01T12:00:00Z",
+                "id": "generated_task_id",
+                "priority": "medium",
+                "title": "T.repeat(255)",
+                "user_name": "julie"
+              },
+              "status": "success"
+            },
+            "when": "api.createTask is called with maximum length title and description"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the function throws an error if the title exceeds the maximum allowed length.",
+          "id": "create_task_title_too_long",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Title Exceeding Maximum Length",
+          "test_setup": {
+            "given": {
+              "description": "Short description",
+              "due_date": "2024-08-02T15:00:00Z",
+              "priority": "medium",
+              "title": "T.repeat(256)",
+              "user_name": "katie"
+            },
+            "then": {
+              "error_message": "Title exceeds maximum length",
+              "status": "error"
+            },
+            "when": "api.createTask is called with too long title"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the function throws an error if the description exceeds the maximum allowed length.",
+          "id": "create_task_description_too_long",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Description Exceeding Maximum Length",
+          "test_setup": {
+            "given": {
+              "description": "D.repeat(1025)",
+              "due_date": "2024-08-02T15:00:00Z",
+              "priority": "medium",
+              "title": "Short title",
+              "user_name": "leo"
+            },
+            "then": {
+              "error_message": "Description exceeds maximum length",
+              "status": "error"
+            },
+            "when": "api.createTask is called with too long description"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the function throws an error if user_name is a whitespace string.",
+          "id": "create_task_user_name_whitespace",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with User Name as Whitespace String",
+          "test_setup": {
+            "given": {
+              "description": "Vacuum and dust",
+              "due_date": "2024-08-05T16:00:00Z",
+              "priority": "low",
+              "title": "Clean house",
+              "user_name": "    "
+            },
+            "then": {
+              "error_message": "User name cannot be empty",
+              "status": "error"
+            },
+            "when": "api.createTask is called with user_name as whitespace"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the function handles backend server errors gracefully when valid data is provided.",
+          "id": "create_task_server_error",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Valid Data but Server Error",
+          "test_setup": {
+            "given": {
+              "description": "Resolve production issue",
+              "due_date": "2024-08-10T09:00:00Z",
+              "priority": "high",
+              "title": "Fix bug",
+              "user_name": "mike"
+            },
+            "then": {
+              "error_message": "Internal server error",
+              "status": "error"
+            },
+            "when": "api.createTask is called and the backend returns a 500 Internal Server Error"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the function throws an error if the network request fails (e.g., due to connectivity issues).",
+          "id": "create_task_network_failure",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Network Failure",
+          "test_setup": {
+            "given": {
+              "description": "Upload important documents",
+              "due_date": "2024-08-11T20:00:00Z",
+              "priority": "medium",
+              "title": "Backup files",
+              "user_name": "nora"
+            },
+            "then": {
+              "error_message": "Network error",
+              "status": "error"
             },
             "when": "api.createTask is called and the network is unavailable"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the function throws an error if the backend returns a server error (HTTP 500).",
-          "id": "create_task_backend_error",
+          "description": "Verify that the function handles creation of tasks with duplicate titles (if not allowed by business rules).",
+          "id": "create_task_duplicate_title",
           "implementation_id": "frontend_create_task_api_function",
-          "name": "Create task with backend error",
+          "name": "Create Task with Duplicate Title",
           "test_setup": {
             "given": {
-              "description": "Submit the final report",
-              "due_date": "2024-07-03T12:00:00Z",
+              "description": "Summarize weekly progress",
+              "due_date": "2024-08-12T18:00:00Z",
               "priority": "low",
-              "title": "Submit report",
-              "user_name": "bob"
+              "title": "Weekly review",
+              "user_name": "oliver"
             },
             "then": {
-              "error": "Internal server error"
+              "error_message": "A task with this title already exists",
+              "status": "error"
             },
-            "when": "api.createTask is called and the backend returns HTTP 500"
+            "when": "api.createTask is called with a title that already exists"
           },
           "type": "negative"
+        },
+        {
+          "description": "Verify that the function ignores any extra, unexpected fields in the input and only persists required fields.",
+          "id": "create_task_additional_unexpected_fields",
+          "implementation_id": "frontend_create_task_api_function",
+          "name": "Create Task with Additional Unexpected Fields",
+          "test_setup": {
+            "given": {
+              "description": "Sort documents into folders",
+              "due_date": "2024-08-13T10:00:00Z",
+              "extra_field": "should be ignored",
+              "priority": "medium",
+              "title": "Organize files",
+              "user_name": "pam"
+            },
+            "then": {
+              "created_task": {
+                "description": "Sort documents into folders",
+                "due_date": "2024-08-13T10:00:00Z",
+                "id": "generated_task_id",
+                "priority": "medium",
+                "title": "Organize files",
+                "user_name": "pam"
+              },
+              "status": "success"
+            },
+            "when": "api.createTask is called with extra fields in the payload"
+          },
+          "type": "edge"
         }
-      ],
-      "test_path": ".codevalid/tests/task_5910273648_20240609123001/frontend_create_task_api_function.ts"
+      ]
     },
     {
       "implementation_id": "backend_add_task_function",
       "test_cases": [
         {
-          "description": "Verify that a task is created successfully when all required fields are provided.",
-          "id": "tc_add_task_valid_all_fields",
+          "description": "Verify that a task is created successfully when all required fields are provided with valid values.",
+          "id": "tc_addtask_valid_full_fields",
           "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_with_all_required_fields",
+          "name": "test_create_task_with_all_valid_fields",
           "test_setup": {
             "given": {
-              "description": "Finish the final project report for submission",
+              "description": "Buy milk, eggs, and bread",
               "due_date": "2024-07-01",
               "priority": "high",
-              "title": "Complete project report",
+              "title": "Buy groceries",
               "user_name": "alice"
             },
             "then": {
               "task": {
-                "description": "Finish the final project report for submission",
+                "description": "Buy milk, eggs, and bread",
                 "due_date": "2024-07-01",
-                "id": "unique_generated_id",
+                "id": "unique_task_id_generated",
                 "priority": "high",
-                "title": "Complete project report",
+                "title": "Buy groceries",
                 "user_name": "alice"
               }
             },
@@ -374,316 +431,280 @@
           "type": "positive"
         },
         {
-          "description": "Verify that the function does not create a task if the title is missing.",
-          "id": "tc_add_task_missing_title",
+          "description": "Verify that the system does not create a task if the title is missing.",
+          "id": "tc_addtask_missing_title",
           "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_missing_title",
+          "name": "test_create_task_missing_title",
           "test_setup": {
             "given": {
-              "description": "Description present",
-              "due_date": "2024-08-15",
-              "priority": "low",
+              "description": "Finish report",
+              "due_date": "2024-07-10",
+              "priority": "medium",
               "user_name": "bob"
             },
-            "then": {
-              "error": "Title is required"
-            },
-            "when": "add_task is called without title"
+            "then": "Task creation fails with error indicating 'title' is required",
+            "when": "add_task is called with missing title"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the function does not create a task if the description is missing.",
-          "id": "tc_add_task_missing_description",
+          "description": "Verify that the system does not create a task if the description is missing.",
+          "id": "tc_addtask_missing_description",
           "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_missing_description",
+          "name": "test_create_task_missing_description",
           "test_setup": {
             "given": {
-              "due_date": "2024-08-10",
-              "priority": "medium",
-              "title": "New Task",
+              "due_date": "2024-07-05",
+              "priority": "low",
+              "title": "Clean house",
               "user_name": "carol"
             },
-            "then": {
-              "error": "Description is required"
-            },
-            "when": "add_task is called without description"
+            "then": "Task creation fails with error indicating 'description' is required",
+            "when": "add_task is called with missing description"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the function does not create a task if the priority is missing.",
-          "id": "tc_add_task_missing_priority",
+          "description": "Verify that the system does not create a task if the priority is missing.",
+          "id": "tc_addtask_missing_priority",
           "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_missing_priority",
+          "name": "test_create_task_missing_priority",
           "test_setup": {
             "given": {
-              "description": "Testing priority missing",
-              "due_date": "2024-06-30",
-              "title": "Another Task",
+              "description": "Fix the leaking sink",
+              "due_date": "2024-07-03",
+              "title": "Call plumber",
               "user_name": "dave"
             },
-            "then": {
-              "error": "Priority is required"
-            },
-            "when": "add_task is called without priority"
+            "then": "Task creation fails with error indicating 'priority' is required",
+            "when": "add_task is called with missing priority"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the function does not create a task if the due date is missing.",
-          "id": "tc_add_task_missing_due_date",
+          "description": "Verify that the system does not create a task if the due date is missing.",
+          "id": "tc_addtask_missing_duedate",
           "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_missing_due_date",
+          "name": "test_create_task_missing_due_date",
           "test_setup": {
             "given": {
-              "description": "Due date is missing",
-              "priority": "high",
-              "title": "Due Date Test",
+              "description": "Finish reading '1984'",
+              "priority": "medium",
+              "title": "Read book",
               "user_name": "eve"
             },
-            "then": {
-              "error": "Due date is required"
-            },
-            "when": "add_task is called without due_date"
+            "then": "Task creation fails with error indicating 'due_date' is required",
+            "when": "add_task is called with missing due date"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the function does not create a task if the user_name is missing.",
-          "id": "tc_add_task_missing_user_name",
+          "description": "Verify that the system does not create a task if the user_name is missing.",
+          "id": "tc_addtask_missing_username",
           "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_missing_user_name",
+          "name": "test_create_task_missing_user_name",
           "test_setup": {
             "given": {
-              "description": "User name is missing",
-              "due_date": "2024-09-01",
-              "priority": "low",
-              "title": "User Name Test"
+              "description": "Plan summer trip itinerary",
+              "due_date": "2024-08-01",
+              "priority": "high",
+              "title": "Plan trip"
             },
-            "then": {
-              "error": "User name is required"
-            },
-            "when": "add_task is called without user_name"
+            "then": "Task creation fails with error indicating 'user_name' is required",
+            "when": "add_task is called with missing user_name"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the function does not create a task if any required field is an empty string.",
-          "id": "tc_add_task_empty_string_fields",
+          "description": "Verify that the system does not create a task when the title is an empty string.",
+          "id": "tc_addtask_empty_title",
           "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_with_empty_string_fields",
+          "name": "test_create_task_with_empty_title",
           "test_setup": {
             "given": {
-              "description": "Valid description",
-              "due_date": "2024-10-10",
-              "priority": "medium",
+              "description": "Prepare slides for meeting",
+              "due_date": "2024-07-12",
+              "priority": "high",
               "title": "",
               "user_name": "frank"
             },
-            "then": {
-              "error": "Title is required"
+            "then": "Task creation fails with error indicating 'title' cannot be empty",
+            "when": "add_task is called with an empty title"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the system does not create a task when the description is an empty string.",
+          "id": "tc_addtask_empty_description",
+          "implementation_id": "backend_add_task_function",
+          "name": "test_create_task_with_empty_description",
+          "test_setup": {
+            "given": {
+              "description": "",
+              "due_date": "2024-07-15",
+              "priority": "low",
+              "title": "Attend seminar",
+              "user_name": "gina"
             },
-            "when": "add_task is called with empty title"
+            "then": "Task creation fails with error indicating 'description' cannot be empty",
+            "when": "add_task is called with an empty description"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the system does not create a task if priority is not among allowed values (e.g., 'high', 'medium', 'low').",
+          "id": "tc_addtask_invalid_priority",
+          "implementation_id": "backend_add_task_function",
+          "name": "test_create_task_with_invalid_priority",
+          "test_setup": {
+            "given": {
+              "description": "Go to the gym",
+              "due_date": "2024-07-20",
+              "priority": "urgent",
+              "title": "Workout",
+              "user_name": "harry"
+            },
+            "then": "Task creation fails with error indicating invalid 'priority' value",
+            "when": "add_task is called with invalid priority value"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that tasks with duplicate titles but different IDs can be created.",
-          "id": "tc_add_task_duplicate_titles",
+          "description": "Verify that the system does not create a task if due date is not in a valid date format.",
+          "id": "tc_addtask_invalid_duedate_format",
           "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_with_duplicate_titles",
-          "test_setup": {
-            "given": [
-              {
-                "description": "First task",
-                "due_date": "2024-07-15",
-                "priority": "low",
-                "title": "Same Title",
-                "user_name": "george"
-              },
-              {
-                "description": "Second task with same title",
-                "due_date": "2024-07-16",
-                "priority": "high",
-                "title": "Same Title",
-                "user_name": "hannah"
-              }
-            ],
-            "then": [
-              {
-                "task": {
-                  "description": "First task",
-                  "due_date": "2024-07-15",
-                  "id": "unique_generated_id_1",
-                  "priority": "low",
-                  "title": "Same Title",
-                  "user_name": "george"
-                }
-              },
-              {
-                "task": {
-                  "description": "Second task with same title",
-                  "due_date": "2024-07-16",
-                  "id": "unique_generated_id_2",
-                  "priority": "high",
-                  "title": "Same Title",
-                  "user_name": "hannah"
-                }
-              }
-            ],
-            "when": "add_task is called twice with same title but different details"
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify the function accepts all allowed priority values, including boundaries if applicable.",
-          "id": "tc_add_task_boundary_priority",
-          "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_with_priority_boundary_values",
-          "test_setup": {
-            "given": [
-              {
-                "description": "Testing lowest allowed priority",
-                "due_date": "2024-10-01",
-                "priority": "low",
-                "title": "Low Priority Task",
-                "user_name": "ian"
-              },
-              {
-                "description": "Testing highest allowed priority",
-                "due_date": "2024-10-01",
-                "priority": "high",
-                "title": "High Priority Task",
-                "user_name": "jane"
-              }
-            ],
-            "then": [
-              {
-                "task": {
-                  "description": "Testing lowest allowed priority",
-                  "due_date": "2024-10-01",
-                  "id": "unique_generated_id_low",
-                  "priority": "low",
-                  "title": "Low Priority Task",
-                  "user_name": "ian"
-                }
-              },
-              {
-                "task": {
-                  "description": "Testing highest allowed priority",
-                  "due_date": "2024-10-01",
-                  "id": "unique_generated_id_high",
-                  "priority": "high",
-                  "title": "High Priority Task",
-                  "user_name": "jane"
-                }
-              }
-            ],
-            "when": "add_task is called with priority on boundary values"
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that the function does not create a task if the due date format is invalid.",
-          "id": "tc_add_task_invalid_due_date_format",
-          "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_invalid_due_date_format",
+          "name": "test_create_task_with_invalid_due_date_format",
           "test_setup": {
             "given": {
-              "description": "Invalid due date format",
-              "due_date": "31-12-2024",
+              "description": "Annual checkup",
+              "due_date": "15/07/2024",
               "priority": "medium",
-              "title": "Bad Due Date",
-              "user_name": "kate"
+              "title": "Dentist appointment",
+              "user_name": "ian"
             },
-            "then": {
-              "error": "Invalid due date format"
-            },
-            "when": "add_task is called with invalid due date format"
+            "then": "Task creation fails with error indicating invalid 'due_date' format",
+            "when": "add_task is called with an invalid due date format"
           },
           "type": "negative"
         },
         {
-          "description": "Verify the function can handle very long titles and descriptions.",
-          "id": "tc_add_task_long_title_description",
+          "description": "Verify system behavior when a task is created with a due date in the past.",
+          "id": "tc_addtask_past_due_date",
           "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_with_max_length_title_and_description",
+          "name": "test_create_task_with_past_due_date",
           "test_setup": {
             "given": {
-              "description": "D.repeat(1000)",
-              "due_date": "2024-12-31",
+              "description": "Pay electricity and water bills",
+              "due_date": "2023-06-01",
+              "priority": "high",
+              "title": "Pay bills",
+              "user_name": "jane"
+            },
+            "then": "Task creation fails or generates a warning about past due date",
+            "when": "add_task is called with a past due date"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the system handles very long titles correctly.",
+          "id": "tc_addtask_long_title",
+          "implementation_id": "backend_add_task_function",
+          "name": "test_create_task_with_very_long_title",
+          "test_setup": {
+            "given": {
+              "description": "Test task with maximum title length",
+              "due_date": "2024-07-30",
               "priority": "medium",
               "title": "T.repeat(255)",
-              "user_name": "louis"
+              "user_name": "kate"
+            },
+            "then": "Task is created if length is allowed, otherwise fails with error about title length",
+            "when": "add_task is called with a very long title (e.g., 255 characters)"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the system handles very long descriptions correctly.",
+          "id": "tc_addtask_long_description",
+          "implementation_id": "backend_add_task_function",
+          "name": "test_create_task_with_very_long_description",
+          "test_setup": {
+            "given": {
+              "description": "D.repeat(1024)",
+              "due_date": "2024-07-31",
+              "priority": "low",
+              "title": "Generate report",
+              "user_name": "lucas"
+            },
+            "then": "Task is created if length is allowed, otherwise fails with error about description length",
+            "when": "add_task is called with a very long description (e.g., 1024 characters)"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the system allows or rejects creation of a task with identical title and details as an existing task.",
+          "id": "tc_addtask_duplicate_task",
+          "implementation_id": "backend_add_task_function",
+          "name": "test_create_duplicate_task",
+          "test_setup": {
+            "given": {
+              "description": "Upload to portal",
+              "due_date": "2024-07-22",
+              "priority": "high",
+              "title": "Submit assignment",
+              "user_name": "mike"
+            },
+            "then": "Each call generates a unique task ID; both tasks are created if duplicates are allowed, otherwise second call fails",
+            "when": "add_task is called twice with the same data"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the system correctly stores task fields containing special characters.",
+          "id": "tc_addtask_special_characters",
+          "implementation_id": "backend_add_task_function",
+          "name": "test_create_task_with_special_characters",
+          "test_setup": {
+            "given": {
+              "description": "Check for bugs & merge if OK.",
+              "due_date": "2024-07-25",
+              "priority": "medium",
+              "title": "Review PR #42!",
+              "user_name": "nancy"
             },
             "then": {
               "task": {
-                "description": "D.repeat(1000)",
-                "due_date": "2024-12-31",
-                "id": "unique_generated_id_long",
+                "description": "Check for bugs & merge if OK.",
+                "due_date": "2024-07-25",
+                "id": "unique_task_id_generated",
                 "priority": "medium",
-                "title": "T.repeat(255)",
-                "user_name": "louis"
+                "title": "Review PR #42!",
+                "user_name": "nancy"
               }
             },
-            "when": "add_task is called with maximum allowed length in title and description"
+            "when": "add_task is called with special characters in fields"
           },
           "type": "edge"
         },
         {
-          "description": "Verify the function does not create a task if required string fields are not strings.",
-          "id": "tc_add_task_non_string_fields",
+          "description": "Verify that the system trims or preserves leading/trailing whitespace in task fields as per requirements.",
+          "id": "tc_addtask_whitespace_fields",
           "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_with_non_string_fields",
+          "name": "test_create_task_with_whitespace_in_fields",
           "test_setup": {
             "given": {
-              "description": [
-                "Not",
-                "a",
-                "string"
-              ],
-              "due_date": "2024-11-20",
-              "priority": "high",
-              "title": 12345,
-              "user_name": true
+              "description": "  Investigate crash   ",
+              "due_date": "2024-07-28",
+              "priority": "low",
+              "title": "  Fix bug  ",
+              "user_name": " oscar "
             },
-            "then": {
-              "error": "Invalid field types"
-            },
-            "when": "add_task is called with non-string required fields"
+            "then": "Task is created with whitespace preserved or trimmed; field storage is verified",
+            "when": "add_task is called with whitespace in fields"
           },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that after adding a task, the task is persisted and retrievable from the database.",
-          "id": "tc_add_task_persistence",
-          "implementation_id": "backend_add_task_function",
-          "name": "test_add_task_persistence",
-          "test_setup": {
-            "given": {
-              "description": "Test that the task is persisted",
-              "due_date": "2024-07-20",
-              "priority": "medium",
-              "title": "Persistence Test",
-              "user_name": "maria"
-            },
-            "then": {
-              "task_in_database": {
-                "description": "Test that the task is persisted",
-                "due_date": "2024-07-20",
-                "id": "unique_generated_id_persist",
-                "priority": "medium",
-                "title": "Persistence Test",
-                "user_name": "maria"
-              }
-            },
-            "when": "add_task is called and then tasks are retrieved"
-          },
-          "type": "positive"
+          "type": "edge"
         }
-      ],
-      "test_path": ".codevalid/tests/task_5910273648_20240609123001/backend_add_task_function.py"
+      ]
     },
     {
       "implementation_id": "backend_update_task_function",
@@ -1046,199 +1067,246 @@
       "implementation_id": "ui_task_form_component",
       "test_cases": [
         {
-          "description": "Verify that the form submits successfully when all required fields (title, description, priority, due date, user_name) are filled.",
-          "id": "TC_01_create_task_success",
+          "description": "Verify that a user can successfully create a task when all required fields (title, description, priority, due date, user_name) are filled.",
+          "id": "TC001_create_task_success_full_fields",
           "implementation_id": "ui_task_form_component",
-          "name": "Create Task Successfully With All Required Fields",
+          "name": "Create Task with All Required Fields",
           "test_setup": {
-            "given": "TaskForm rendered with empty fields and a mock onSubmit handler.",
-            "then": "onSubmit is called with the provided task details, and no validation errors are shown.",
-            "when": "User enters valid values for title, description, priority, due date, and user_name, then clicks submit."
+            "given": "TaskForm mounted with empty fields and onSubmit mocked.",
+            "then": "onSubmit is called once with all provided task details and no validation errors are shown.",
+            "when": "User fills title, description, priority, due date, user_name and submits the form."
           },
           "type": "positive"
         },
         {
-          "description": "Verify that the form does not submit and shows a validation error when the title field is empty.",
-          "id": "TC_02_missing_title",
+          "description": "Verify that the form shows a validation error and does not submit when the title is missing.",
+          "id": "TC002_missing_title_shows_error",
           "implementation_id": "ui_task_form_component",
-          "name": "Submission Fails When Title Is Missing",
+          "name": "Missing Title Validation",
           "test_setup": {
-            "given": "TaskForm rendered with all fields empty.",
-            "then": "onSubmit is not called, and a validation error for the title field is displayed.",
-            "when": "User fills description, priority, due date, and user_name, leaves title empty, and submits the form."
+            "given": "TaskForm with description, priority, due date, and user_name filled but title left empty.",
+            "then": "Validation error for missing title is displayed; onSubmit is not called.",
+            "when": "User submits the form."
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the form does not submit and shows a validation error when the description field is empty.",
-          "id": "TC_03_missing_description",
+          "description": "Verify that the form shows a validation error and does not submit when the description is missing.",
+          "id": "TC003_missing_description_shows_error",
           "implementation_id": "ui_task_form_component",
-          "name": "Submission Fails When Description Is Missing",
+          "name": "Missing Description Validation",
           "test_setup": {
-            "given": "TaskForm rendered with all fields empty.",
-            "then": "onSubmit is not called, and a validation error for the description field is displayed.",
-            "when": "User fills title, priority, due date, and user_name, leaves description empty, and submits the form."
+            "given": "TaskForm with title, priority, due date, user_name filled but description left empty.",
+            "then": "Validation error for missing description is displayed; onSubmit is not called.",
+            "when": "User submits the form."
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the form does not submit and shows a validation error when the priority field is empty.",
-          "id": "TC_04_missing_priority",
+          "description": "Verify that the form shows a validation error and does not submit when the priority is missing.",
+          "id": "TC004_missing_priority_shows_error",
           "implementation_id": "ui_task_form_component",
-          "name": "Submission Fails When Priority Is Missing",
+          "name": "Missing Priority Validation",
           "test_setup": {
-            "given": "TaskForm rendered with all fields empty.",
-            "then": "onSubmit is not called, and a validation error for the priority field is displayed.",
-            "when": "User fills title, description, due date, and user_name, leaves priority empty, and submits the form."
+            "given": "TaskForm with title, description, due date, user_name filled but priority left empty.",
+            "then": "Validation error for missing priority is displayed; onSubmit is not called.",
+            "when": "User submits the form."
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the form does not submit and shows a validation error when the due date field is empty.",
-          "id": "TC_05_missing_due_date",
+          "description": "Verify that the form shows a validation error and does not submit when the due date is missing.",
+          "id": "TC005_missing_due_date_shows_error",
           "implementation_id": "ui_task_form_component",
-          "name": "Submission Fails When Due Date Is Missing",
+          "name": "Missing Due Date Validation",
           "test_setup": {
-            "given": "TaskForm rendered with all fields empty.",
-            "then": "onSubmit is not called, and a validation error for the due date field is displayed.",
-            "when": "User fills title, description, priority, and user_name, leaves due date empty, and submits the form."
+            "given": "TaskForm with title, description, priority, user_name filled but due date left empty.",
+            "then": "Validation error for missing due date is displayed; onSubmit is not called.",
+            "when": "User submits the form."
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the form does not submit and shows a validation error when the user_name field is empty.",
-          "id": "TC_06_missing_user_name",
+          "description": "Verify that the form shows a validation error and does not submit when user_name is missing.",
+          "id": "TC006_missing_user_name_shows_error",
           "implementation_id": "ui_task_form_component",
-          "name": "Submission Fails When User Name Is Missing",
+          "name": "Missing User Name Validation",
           "test_setup": {
-            "given": "TaskForm rendered with all fields empty.",
-            "then": "onSubmit is not called, and a validation error for the user_name field is displayed.",
-            "when": "User fills title, description, priority, and due date, leaves user_name empty, and submits the form."
+            "given": "TaskForm with title, description, priority, due date filled but user_name left empty.",
+            "then": "Validation error for missing user_name is displayed; onSubmit is not called.",
+            "when": "User submits the form."
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the form does not submit and shows validation errors for all required fields when submitted empty.",
-          "id": "TC_07_blank_form_submission",
+          "description": "Verify that validation errors are shown for all missing required fields and the form does not submit.",
+          "id": "TC007_multiple_missing_fields_errors",
           "implementation_id": "ui_task_form_component",
-          "name": "Submission Fails With All Fields Blank",
+          "name": "Multiple Missing Fields Validation",
           "test_setup": {
-            "given": "TaskForm rendered with all fields empty.",
-            "then": "onSubmit is not called, and validation errors for all required fields are displayed.",
-            "when": "User clicks submit without entering any data."
+            "given": "TaskForm with only title filled; all other required fields are empty.",
+            "then": "Validation errors for missing description, priority, due date, and user_name are displayed; onSubmit is not called.",
+            "when": "User submits the form."
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the priority dropdown renders with expected options (e.g., Low, Medium, High).",
-          "id": "TC_08_priority_options_render",
+          "description": "Verify that the form can be submitted successfully if the category field is left empty, as it is not required.",
+          "id": "TC008_category_optional_field",
           "implementation_id": "ui_task_form_component",
-          "name": "Priority Options Render Correctly",
+          "name": "Category Field Optional",
           "test_setup": {
-            "given": "TaskForm rendered.",
-            "then": "Priority options such as Low, Medium, and High are visible and selectable.",
-            "when": "User inspects the priority dropdown."
-          },
-          "type": "positive"
-        },
-        {
-          "description": "Verify that the form shows a validation error when due date is set to a past date.",
-          "id": "TC_09_due_date_validation_future",
-          "implementation_id": "ui_task_form_component",
-          "name": "Due Date Must Be In The Future",
-          "test_setup": {
-            "given": "TaskForm rendered.",
-            "then": "onSubmit is not called, and a validation error for due date is displayed.",
-            "when": "User enters a due date that is before today and submits the form."
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify the title field accepts and submits the maximum allowed length (e.g., 255 characters) without error.",
-          "id": "TC_10_max_title_length",
-          "implementation_id": "ui_task_form_component",
-          "name": "Title Field Accepts Maximum Allowed Length",
-          "test_setup": {
-            "given": "TaskForm rendered with a max title length constraint (e.g., 255 chars).",
-            "then": "onSubmit is called with the long title, and no validation errors are shown.",
-            "when": "User enters a title with 'T.repeat(255)' characters, fills other required fields, and submits."
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that the form submits successfully when the category field is left blank.",
-          "id": "TC_11_category_optional",
-          "implementation_id": "ui_task_form_component",
-          "name": "Category Field Is Optional",
-          "test_setup": {
-            "given": "TaskForm rendered.",
-            "then": "onSubmit is called, and no validation error for category is shown.",
-            "when": "User fills all required fields, leaves category blank, and submits."
-          },
-          "type": "positive"
-        },
-        {
-          "description": "Verify that the form renders input fields for title, description, priority, category, due date, and user_name.",
-          "id": "TC_12_render_all_fields",
-          "implementation_id": "ui_task_form_component",
-          "name": "All Fields Render On Form",
-          "test_setup": {
-            "given": "TaskForm rendered.",
-            "then": "Input fields for title, description, priority, category, due date, and user_name are visible.",
-            "when": "User inspects the form."
-          },
-          "type": "positive"
-        },
-        {
-          "description": "Verify that after a validation error is shown, correcting the input removes the error.",
-          "id": "TC_13_validation_error_cleared_on_input",
-          "implementation_id": "ui_task_form_component",
-          "name": "Validation Error Is Cleared After Correct Input",
-          "test_setup": {
-            "given": "TaskForm rendered. User submits form with title missing and sees validation error.",
-            "then": "Validation error for title is cleared.",
-            "when": "User enters a valid title."
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that the submit button is disabled when any required field is missing.",
-          "id": "TC_14_disabled_submit_when_invalid",
-          "implementation_id": "ui_task_form_component",
-          "name": "Submit Button Is Disabled When Form Is Invalid",
-          "test_setup": {
-            "given": "TaskForm rendered with at least one required field empty.",
-            "then": "Submit button is disabled.",
-            "when": "User inspects the submit button."
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that the form accepts special characters in title and description fields.",
-          "id": "TC_15_special_characters_input",
-          "implementation_id": "ui_task_form_component",
-          "name": "Form Accepts Special Characters In Fields",
-          "test_setup": {
-            "given": "TaskForm rendered.",
-            "then": "onSubmit is called with special characters in title and description.",
-            "when": "User enters special characters in title and description, fills other required fields, and submits."
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that the form fields are cleared after a successful submission.",
-          "id": "TC_16_form_reset_after_submit",
-          "implementation_id": "ui_task_form_component",
-          "name": "Form Resets After Successful Submission",
-          "test_setup": {
-            "given": "TaskForm rendered with all fields filled and a mock onSubmit handler.",
-            "then": "All input fields are reset to their default empty state.",
+            "given": "TaskForm with all required fields filled; category left empty.",
+            "then": "onSubmit is called with task details (category as undefined or empty); no validation error for category.",
             "when": "User submits the form."
           },
           "type": "positive"
+        },
+        {
+          "description": "Verify that the form accepts the lowest allowed priority value and submits successfully.",
+          "id": "TC009_priority_edge_value_low",
+          "implementation_id": "ui_task_form_component",
+          "name": "Priority Minimum Edge Value",
+          "test_setup": {
+            "given": "TaskForm with all required fields filled; priority set to minimum allowed value (e.g., 'Low').",
+            "then": "onSubmit is called with priority set to 'Low'; no validation errors.",
+            "when": "User submits the form."
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the form accepts the highest allowed priority value and submits successfully.",
+          "id": "TC010_priority_edge_value_high",
+          "implementation_id": "ui_task_form_component",
+          "name": "Priority Maximum Edge Value",
+          "test_setup": {
+            "given": "TaskForm with all required fields filled; priority set to maximum allowed value (e.g., 'High').",
+            "then": "onSubmit is called with priority set to 'High'; no validation errors.",
+            "when": "User submits the form."
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the form shows a validation error if the due date is in the past and does not submit.",
+          "id": "TC011_due_date_in_past_validation",
+          "implementation_id": "ui_task_form_component",
+          "name": "Due Date in Past Validation",
+          "test_setup": {
+            "given": "TaskForm with all required fields filled; due date set to a date before today.",
+            "then": "Validation error for due date in the past is displayed; onSubmit is not called.",
+            "when": "User submits the form."
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the form accepts today's date as a valid due date and submits successfully.",
+          "id": "TC012_due_date_today",
+          "implementation_id": "ui_task_form_component",
+          "name": "Due Date Today Edge Case",
+          "test_setup": {
+            "given": "TaskForm with all required fields filled; due date set to today.",
+            "then": "onSubmit is called with due date set to today; no validation errors.",
+            "when": "User submits the form."
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the form accepts a title at maximum allowed length and submits successfully.",
+          "id": "TC013_title_max_length",
+          "implementation_id": "ui_task_form_component",
+          "name": "Title Maximum Length Edge Case",
+          "test_setup": {
+            "given": "TaskForm with all required fields filled; title set to T.repeat(255).",
+            "then": "onSubmit is called with title at max length; no validation errors.",
+            "when": "User submits the form."
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the form shows a validation error if the title exceeds the maximum allowed length.",
+          "id": "TC014_title_exceeds_max_length",
+          "implementation_id": "ui_task_form_component",
+          "name": "Title Exceeds Maximum Length",
+          "test_setup": {
+            "given": "TaskForm with all required fields filled; title set to T.repeat(256).",
+            "then": "Validation error for title exceeding max length is displayed; onSubmit is not called.",
+            "when": "User submits the form."
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that all fields are empty and no validation errors are shown when the form is first rendered.",
+          "id": "TC015_blank_form_initial_state",
+          "implementation_id": "ui_task_form_component",
+          "name": "Form Initial State is Blank",
+          "test_setup": {
+            "given": "TaskForm mounted with no pre-filled values.",
+            "then": "All input fields are empty; no validation errors are displayed.",
+            "when": "Component is rendered."
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the form reset/cancel button clears all fields and validation errors.",
+          "id": "TC016_cancel_or_reset_button",
+          "implementation_id": "ui_task_form_component",
+          "name": "Form Reset or Cancel Button",
+          "test_setup": {
+            "given": "TaskForm with fields filled and validation errors shown.",
+            "then": "All fields are cleared; validation errors are dismissed.",
+            "when": "User clicks the reset/cancel button."
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Verify that the user can select a category and it is included in the submitted task details.",
+          "id": "TC017_category_select",
+          "implementation_id": "ui_task_form_component",
+          "name": "Category Field Selection",
+          "test_setup": {
+            "given": "TaskForm with all required fields filled; category selected from dropdown.",
+            "then": "onSubmit is called with category field included in task details.",
+            "when": "User submits the form."
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Verify that each input field (title, description, priority, due date, category, user_name) and its label are rendered in the form.",
+          "id": "TC018_render_all_fields_and_labels",
+          "implementation_id": "ui_task_form_component",
+          "name": "Form Renders All Fields and Labels",
+          "test_setup": {
+            "given": "TaskForm mounted.",
+            "then": "Fields and labels for title, description, priority, category, due date, user_name are displayed.",
+            "when": "Component is rendered."
+          },
+          "type": "positive"
+        },
+        {
+          "description": "Verify that the submit button is disabled when required fields are missing or invalid.",
+          "id": "TC019_submit_button_disabled_when_invalid",
+          "implementation_id": "ui_task_form_component",
+          "name": "Submit Button Disabled When Invalid",
+          "test_setup": {
+            "given": "TaskForm with some required fields empty or invalid.",
+            "then": "Submit button is disabled until all required fields are valid.",
+            "when": "Component is rendered."
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that fields containing only whitespace are treated as empty and trigger validation errors.",
+          "id": "TC020_whitespace_only_fields_validation",
+          "implementation_id": "ui_task_form_component",
+          "name": "Whitespace Only Fields Validation",
+          "test_setup": {
+            "given": "TaskForm with title, description, user_name fields containing only whitespace; other required fields filled.",
+            "then": "Validation errors for title, description, and user_name are displayed; onSubmit is not called.",
+            "when": "User submits the form."
+          },
+          "type": "edge"
         }
-      ],
-      "test_path": ".codevalid/tests/task_5910273648_20240609123001/ui_task_form_component.ts"
+      ]
     },
     {
       "implementation_id": "ui_taskitem_edit_button",
@@ -1558,15 +1626,15 @@
       "implementation_id": "backend_create_task_endpoint",
       "test_cases": [
         {
-          "description": "User creates a task with all required fields correctly populated. Task is created and all details are returned.",
-          "id": "tc_create_task_successful",
+          "description": "Verify that a user can successfully create a task with all required fields provided.",
+          "id": "TC01_create_task_success",
           "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_successful",
+          "name": "Create Task - Success",
           "request_body_json": {
-            "description": "Write the API docs for the new endpoints.",
+            "description": "Buy milk, eggs, and bread.",
             "due_date": "2024-07-10",
-            "priority": "high",
-            "title": "Complete documentation",
+            "priority": 2,
+            "title": "Grocery Shopping",
             "user_name": "john_doe"
           },
           "request_headers": {
@@ -1575,31 +1643,31 @@
           "request_method": "POST",
           "request_url": "/tasks",
           "response_body_json": {
-            "description": "Write the API docs for the new endpoints.",
+            "description": "Buy milk, eggs, and bread.",
             "due_date": "2024-07-10",
             "id": "generated_task_id",
-            "priority": "high",
-            "title": "Complete documentation",
+            "priority": 2,
+            "title": "Grocery Shopping",
             "user_name": "john_doe"
           },
-          "response_status_code": 201,
+          "response_status_code": 200,
           "test_setup": {
-            "given": "A valid user and an empty tasks list.",
-            "then": "A new task is created and returned with all provided details.",
-            "when": "User submits all required fields to the endpoint."
+            "given": "A valid user and no existing task with the same data",
+            "then": "Task is created and returned in the response",
+            "when": "POST /tasks with all required fields"
           },
           "type": "positive"
         },
         {
-          "description": "Attempt to create a task without a title. The system should reject the request.",
-          "id": "tc_create_task_missing_title",
+          "description": "Verify that the API returns an error when the title field is missing.",
+          "id": "TC02_create_task_missing_title",
           "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_missing_title",
+          "name": "Create Task - Missing Title",
           "request_body_json": {
-            "description": "No title provided.",
+            "description": "Buy milk, eggs, and bread.",
             "due_date": "2024-07-10",
-            "priority": "medium",
-            "user_name": "jane_doe"
+            "priority": 2,
+            "user_name": "john_doe"
           },
           "request_headers": {
             "Content-Type": "application/json"
@@ -1611,22 +1679,22 @@
           },
           "response_status_code": 422,
           "test_setup": {
-            "given": "A valid user and an empty tasks list.",
-            "then": "The API returns a validation error indicating missing title.",
-            "when": "User omits the title field in the payload."
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with missing title"
           },
           "type": "negative"
         },
         {
-          "description": "Attempt to create a task without a description. The system should reject the request.",
-          "id": "tc_create_task_missing_description",
+          "description": "Verify that the API returns an error when the description field is missing.",
+          "id": "TC03_create_task_missing_description",
           "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_missing_description",
+          "name": "Create Task - Missing Description",
           "request_body_json": {
-            "due_date": "2024-07-11",
-            "priority": "low",
-            "title": "No description",
-            "user_name": "user123"
+            "due_date": "2024-07-10",
+            "priority": 2,
+            "title": "Grocery Shopping",
+            "user_name": "john_doe"
           },
           "request_headers": {
             "Content-Type": "application/json"
@@ -1638,22 +1706,22 @@
           },
           "response_status_code": 422,
           "test_setup": {
-            "given": "A valid user.",
-            "then": "The API returns a validation error indicating missing description.",
-            "when": "User omits the description field in the payload."
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with missing description"
           },
           "type": "negative"
         },
         {
-          "description": "Attempt to create a task without a priority. The system should reject the request.",
-          "id": "tc_create_task_missing_priority",
+          "description": "Verify that the API returns an error when the priority field is missing.",
+          "id": "TC04_create_task_missing_priority",
           "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_missing_priority",
+          "name": "Create Task - Missing Priority",
           "request_body_json": {
-            "description": "No priority field.",
-            "due_date": "2024-07-12",
-            "title": "Priority missing",
-            "user_name": "user456"
+            "description": "Buy milk, eggs, and bread.",
+            "due_date": "2024-07-10",
+            "title": "Grocery Shopping",
+            "user_name": "john_doe"
           },
           "request_headers": {
             "Content-Type": "application/json"
@@ -1665,22 +1733,22 @@
           },
           "response_status_code": 422,
           "test_setup": {
-            "given": "A valid user.",
-            "then": "The API returns a validation error indicating missing priority.",
-            "when": "User omits the priority field in the payload."
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with missing priority"
           },
           "type": "negative"
         },
         {
-          "description": "Attempt to create a task without a due date. The system should reject the request.",
-          "id": "tc_create_task_missing_due_date",
+          "description": "Verify that the API returns an error when the due_date field is missing.",
+          "id": "TC05_create_task_missing_due_date",
           "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_missing_due_date",
+          "name": "Create Task - Missing Due Date",
           "request_body_json": {
-            "description": "No due date specified.",
-            "priority": "high",
-            "title": "Missing due date",
-            "user_name": "user789"
+            "description": "Buy milk, eggs, and bread.",
+            "priority": 2,
+            "title": "Grocery Shopping",
+            "user_name": "john_doe"
           },
           "request_headers": {
             "Content-Type": "application/json"
@@ -1692,22 +1760,22 @@
           },
           "response_status_code": 422,
           "test_setup": {
-            "given": "A valid user.",
-            "then": "The API returns a validation error indicating missing due_date.",
-            "when": "User omits the due_date field in the payload."
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with missing due_date"
           },
           "type": "negative"
         },
         {
-          "description": "Attempt to create a task without a user_name. The system should reject the request.",
-          "id": "tc_create_task_missing_user_name",
+          "description": "Verify that the API returns an error when the user_name field is missing.",
+          "id": "TC06_create_task_missing_user_name",
           "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_missing_user_name",
+          "name": "Create Task - Missing User Name",
           "request_body_json": {
-            "description": "No user_name field.",
-            "due_date": "2024-07-13",
-            "priority": "medium",
-            "title": "No user"
+            "description": "Buy milk, eggs, and bread.",
+            "due_date": "2024-07-10",
+            "priority": 2,
+            "title": "Grocery Shopping"
           },
           "request_headers": {
             "Content-Type": "application/json"
@@ -1719,229 +1787,17 @@
           },
           "response_status_code": 422,
           "test_setup": {
-            "given": "A valid user.",
-            "then": "The API returns a validation error indicating missing user_name.",
-            "when": "User omits the user_name field in the payload."
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with missing user_name"
           },
           "type": "negative"
         },
         {
-          "description": "Attempt to create a task with an empty string for title. Should fail validation.",
-          "id": "tc_create_task_empty_title",
+          "description": "Verify that the API returns an error when all required fields are missing.",
+          "id": "TC07_create_task_all_fields_missing",
           "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_empty_title",
-          "request_body_json": {
-            "description": "Empty title string.",
-            "due_date": "2024-07-14",
-            "priority": "low",
-            "title": "",
-            "user_name": "userEmpty"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "detail": "Field 'title' cannot be empty."
-          },
-          "response_status_code": 422,
-          "test_setup": {
-            "given": "A valid user.",
-            "then": "The API returns a validation error for empty title.",
-            "when": "User provides an empty string for title."
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Attempt to create a task with an invalid due_date format. Should fail validation.",
-          "id": "tc_create_task_invalid_due_date_format",
-          "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_invalid_due_date_format",
-          "request_body_json": {
-            "description": "Due date is not in YYYY-MM-DD format.",
-            "due_date": "07/14/2024",
-            "priority": "high",
-            "title": "Invalid date",
-            "user_name": "userDate"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "detail": "Field 'due_date' must be in YYYY-MM-DD format."
-          },
-          "response_status_code": 422,
-          "test_setup": {
-            "given": "A valid user.",
-            "then": "The API returns a validation error for due_date format.",
-            "when": "User provides an incorrectly formatted due_date."
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Attempt to create a task with a priority value outside allowed enum. Should fail validation.",
-          "id": "tc_create_task_priority_invalid_value",
-          "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_priority_invalid_value",
-          "request_body_json": {
-            "description": "Priority value is not allowed.",
-            "due_date": "2024-07-15",
-            "priority": "urgent",
-            "title": "Invalid priority",
-            "user_name": "userPriority"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "detail": "Field 'priority' must be one of: low, medium, high."
-          },
-          "response_status_code": 422,
-          "test_setup": {
-            "given": "A valid user.",
-            "then": "The API returns a validation error for priority.",
-            "when": "User provides a priority value not in the allowed set."
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Create a task with a title exactly at the maximum allowed length (255 characters). Should succeed.",
-          "id": "tc_create_task_title_max_length",
-          "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_title_max_length",
-          "request_body_json": {
-            "description": "Max length title.",
-            "due_date": "2024-07-16",
-            "priority": "medium",
-            "title": "T.repeat(255)",
-            "user_name": "userMaxLen"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "description": "Max length title.",
-            "due_date": "2024-07-16",
-            "id": "generated_task_id",
-            "priority": "medium",
-            "title": "T.repeat(255)",
-            "user_name": "userMaxLen"
-          },
-          "response_status_code": 201,
-          "test_setup": {
-            "given": "A user is registered.",
-            "then": "The task is created successfully with the long title.",
-            "when": "User submits a title of exactly 255 characters."
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Attempt to create a task with a title exceeding maximum length (256 characters). Should fail validation.",
-          "id": "tc_create_task_title_exceeds_max_length",
-          "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_title_exceeds_max_length",
-          "request_body_json": {
-            "description": "Title too long.",
-            "due_date": "2024-07-17",
-            "priority": "low",
-            "title": "T.repeat(256)",
-            "user_name": "userTooLong"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "detail": "Field 'title' must not exceed 255 characters."
-          },
-          "response_status_code": 422,
-          "test_setup": {
-            "given": "A user is registered.",
-            "then": "The API returns a validation error for title length.",
-            "when": "User submits a title longer than the allowed maximum."
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Attempt to create two tasks with the same title for the same user. Should allow if no uniqueness constraint.",
-          "id": "tc_create_task_duplicate_title_same_user",
-          "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_duplicate_title_same_user",
-          "request_body_json": {
-            "description": "First task.",
-            "due_date": "2024-07-18",
-            "priority": "high",
-            "title": "Task Same Title",
-            "user_name": "repeatedUser"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "description": "First task.",
-            "due_date": "2024-07-18",
-            "id": "generated_task_id_1",
-            "priority": "high",
-            "title": "Task Same Title",
-            "user_name": "repeatedUser"
-          },
-          "response_status_code": 201,
-          "test_setup": {
-            "given": "A user exists.",
-            "then": "Both tasks are created if no uniqueness constraint on title per user.",
-            "when": "User submits two tasks with the same title."
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Attempt to create a task with extra unexpected fields. System should ignore extras and create the task.",
-          "id": "tc_create_task_extra_fields_ignored",
-          "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_extra_fields_ignored",
-          "request_body_json": {
-            "description": "Payload has extra fields.",
-            "due_date": "2024-07-19",
-            "priority": "medium",
-            "title": "Task with extras",
-            "unexpected_field": "should be ignored",
-            "user_name": "userExtra"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "description": "Payload has extra fields.",
-            "due_date": "2024-07-19",
-            "id": "generated_task_id",
-            "priority": "medium",
-            "title": "Task with extras",
-            "user_name": "userExtra"
-          },
-          "response_status_code": 201,
-          "test_setup": {
-            "given": "A user exists.",
-            "then": "Task is created and extra fields are ignored.",
-            "when": "User includes extra fields in the payload."
-          },
-          "type": "edge"
-        },
-        {
-          "description": "User sends an empty JSON object as payload. Should fail validation.",
-          "id": "tc_create_task_blank_payload",
-          "implementation_id": "backend_create_task_endpoint",
-          "name": "create_task_blank_payload",
+          "name": "Create Task - All Fields Missing",
           "request_body_json": {},
           "request_headers": {
             "Content-Type": "application/json"
@@ -1949,18 +1805,284 @@
           "request_method": "POST",
           "request_url": "/tasks",
           "response_body_json": {
-            "detail": "Fields 'title', 'description', 'priority', 'due_date', 'user_name' are required."
+            "detail": "Fields 'title', 'description', 'priority', 'due_date', and 'user_name' are required."
           },
           "response_status_code": 422,
           "test_setup": {
-            "given": "A user exists.",
-            "then": "The API returns a validation error listing all missing fields.",
-            "when": "User sends an empty payload."
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with empty payload"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the API allows creation of a task with the maximum allowed length for the title.",
+          "id": "TC08_create_task_title_max_length",
+          "implementation_id": "backend_create_task_endpoint",
+          "name": "Create Task - Title Max Length",
+          "request_body_json": {
+            "description": "Edge case test for maximum title length.",
+            "due_date": "2024-07-10",
+            "priority": 1,
+            "title": "T.repeat(255)",
+            "user_name": "john_doe"
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "description": "Edge case test for maximum title length.",
+            "due_date": "2024-07-10",
+            "id": "generated_task_id",
+            "priority": 1,
+            "title": "T.repeat(255)",
+            "user_name": "john_doe"
+          },
+          "response_status_code": 200,
+          "test_setup": {
+            "given": "A valid user",
+            "then": "Task is created and returned in the response",
+            "when": "POST /tasks with title at maximum allowed length"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the API returns an error when the title exceeds the maximum allowed length.",
+          "id": "TC09_create_task_title_exceeds_max_length",
+          "implementation_id": "backend_create_task_endpoint",
+          "name": "Create Task - Title Exceeds Max Length",
+          "request_body_json": {
+            "description": "Edge case test for exceeding maximum title length.",
+            "due_date": "2024-07-10",
+            "priority": 1,
+            "title": "T.repeat(256)",
+            "user_name": "john_doe"
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "detail": "Field 'title' exceeds maximum allowed length."
+          },
+          "response_status_code": 422,
+          "test_setup": {
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with title exceeding maximum allowed length"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the API allows creation of a task with the minimum allowed priority value.",
+          "id": "TC10_create_task_priority_boundary_low",
+          "implementation_id": "backend_create_task_endpoint",
+          "name": "Create Task - Priority Minimum Value",
+          "request_body_json": {
+            "description": "Test for minimum priority value.",
+            "due_date": "2024-07-10",
+            "priority": 1,
+            "title": "Low Priority Task",
+            "user_name": "john_doe"
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "description": "Test for minimum priority value.",
+            "due_date": "2024-07-10",
+            "id": "generated_task_id",
+            "priority": 1,
+            "title": "Low Priority Task",
+            "user_name": "john_doe"
+          },
+          "response_status_code": 200,
+          "test_setup": {
+            "given": "A valid user",
+            "then": "Task is created and returned in the response",
+            "when": "POST /tasks with minimum allowed priority"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the API allows creation of a task with the maximum allowed priority value.",
+          "id": "TC11_create_task_priority_boundary_high",
+          "implementation_id": "backend_create_task_endpoint",
+          "name": "Create Task - Priority Maximum Value",
+          "request_body_json": {
+            "description": "Test for maximum priority value.",
+            "due_date": "2024-07-10",
+            "priority": 5,
+            "title": "High Priority Task",
+            "user_name": "john_doe"
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "description": "Test for maximum priority value.",
+            "due_date": "2024-07-10",
+            "id": "generated_task_id",
+            "priority": 5,
+            "title": "High Priority Task",
+            "user_name": "john_doe"
+          },
+          "response_status_code": 200,
+          "test_setup": {
+            "given": "A valid user",
+            "then": "Task is created and returned in the response",
+            "when": "POST /tasks with maximum allowed priority"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the API returns an error when the priority is below the minimum allowed value.",
+          "id": "TC12_create_task_priority_below_min",
+          "implementation_id": "backend_create_task_endpoint",
+          "name": "Create Task - Priority Below Minimum",
+          "request_body_json": {
+            "description": "Test for priority below minimum.",
+            "due_date": "2024-07-10",
+            "priority": 0,
+            "title": "Invalid Priority Task",
+            "user_name": "john_doe"
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "detail": "Field 'priority' is below minimum allowed value."
+          },
+          "response_status_code": 422,
+          "test_setup": {
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with priority below minimum"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the API returns an error when the priority is above the maximum allowed value.",
+          "id": "TC13_create_task_priority_above_max",
+          "implementation_id": "backend_create_task_endpoint",
+          "name": "Create Task - Priority Above Maximum",
+          "request_body_json": {
+            "description": "Test for priority above maximum.",
+            "due_date": "2024-07-10",
+            "priority": 6,
+            "title": "Invalid Priority Task",
+            "user_name": "john_doe"
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "detail": "Field 'priority' is above maximum allowed value."
+          },
+          "response_status_code": 422,
+          "test_setup": {
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with priority above maximum"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the API returns an error when the due_date is not in a valid date format.",
+          "id": "TC14_create_task_due_date_invalid_format",
+          "implementation_id": "backend_create_task_endpoint",
+          "name": "Create Task - Due Date Invalid Format",
+          "request_body_json": {
+            "description": "Test for invalid due date format.",
+            "due_date": "10-07-2024",
+            "priority": 2,
+            "title": "Invalid Due Date Task",
+            "user_name": "john_doe"
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "detail": "Field 'due_date' must be in 'YYYY-MM-DD' format."
+          },
+          "response_status_code": 422,
+          "test_setup": {
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with invalid due_date format"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that the API returns an error when the due_date is in the past.",
+          "id": "TC15_create_task_due_date_past",
+          "implementation_id": "backend_create_task_endpoint",
+          "name": "Create Task - Due Date in the Past",
+          "request_body_json": {
+            "description": "Test for due date in the past.",
+            "due_date": "2022-01-01",
+            "priority": 2,
+            "title": "Past Due Date Task",
+            "user_name": "john_doe"
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "detail": "Field 'due_date' cannot be in the past."
+          },
+          "response_status_code": 422,
+          "test_setup": {
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with due_date in the past"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the API returns an error when required string fields are empty.",
+          "id": "TC16_create_task_empty_strings",
+          "implementation_id": "backend_create_task_endpoint",
+          "name": "Create Task - Empty Strings for Required Fields",
+          "request_body_json": {
+            "description": "",
+            "due_date": "2024-07-10",
+            "priority": 2,
+            "title": "",
+            "user_name": ""
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "detail": "Fields 'title', 'description', and 'user_name' cannot be empty."
+          },
+          "response_status_code": 422,
+          "test_setup": {
+            "given": "A valid user",
+            "then": "Task is not created and a validation error is returned",
+            "when": "POST /tasks with empty strings for required fields"
           },
           "type": "negative"
         }
-      ],
-      "test_path": ".codevalid/tests/task_5910273648_20240609123001/backend_create_task_endpoint.py"
+      ]
     },
     {
       "implementation_id": "api_update_task_endpoint",

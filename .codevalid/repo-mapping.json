@@ -2,7 +2,8 @@
   "task_5910273648_20240609123001": {
     "implementation": [
       {
-        "How_is_it_connected_to_implementation": "UI component that collects task details (title, description, priority, due date) from the user and triggers the task creation process via onSubmit.",
+        "How_is_it_connected_to_implementation": "UI component that collects task details (title, description, priority, due date, category) from the user and triggers the task creation process via onSubmit.",
+        "change_type": "unchanged",
         "file_path": "frontend/src/components/TaskForm.tsx",
         "id": "ui_task_form_component",
         "name": "TaskForm",
@@ -11,6 +12,7 @@
       },
       {
         "How_is_it_connected_to_implementation": "Function that sends a POST request to the backend to create a new task with the provided details.",
+        "change_type": "unchanged",
         "file_path": "frontend/src/api.ts",
         "id": "frontend_create_task_api_function",
         "name": "api.createTask",
@@ -19,6 +21,7 @@
       },
       {
         "How_is_it_connected_to_implementation": "FastAPI endpoint that receives task creation requests, validates input, and delegates creation to the database layer.",
+        "change_type": "unchanged",
         "file_path": "backend/main.py",
         "id": "backend_create_task_endpoint",
         "name": "create_task",
@@ -27,10 +30,11 @@
       },
       {
         "How_is_it_connected_to_implementation": "Function that generates a unique task ID, stores the new task in the database, and returns the created task.",
+        "change_type": "unchanged",
         "file_path": "backend/database.py",
         "id": "backend_add_task_function",
         "name": "add_task",
-        "pseudo_code": "Get current list of tasks\nGenerate unique ID for new task\nCreate Task object with provided details\nAppend new task to list\nSave updated list to database\nReturn new task",
+        "pseudo_code": "Get current list of tasks\nGenerate unique ID for new task\nCreate Task object with provided details\nAppend new task to list\nReturn new task",
         "type": "function"
       }
     ],
