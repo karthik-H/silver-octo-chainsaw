@@ -4,8 +4,8 @@ import '@testing-library/jest-dom';
 import { TaskForm } from '../../../frontend/src/components/TaskForm';
 import type { TaskCreate } from '../../../frontend/src/api';
 
-// Helper to fill required fields
-function fillRequiredFields(values: Partial<TaskCreate> = {}) {
+// Helper to fill form fields
+function fillFields(values: Partial<TaskCreate & { user_name?: string }> = {}) {
   if (values.title !== undefined) {
     fireEvent.change(screen.getByPlaceholderText('What needs to be done?'), { target: { value: values.title } });
   }
@@ -21,220 +21,262 @@ function fillRequiredFields(values: Partial<TaskCreate> = {}) {
   if (values.due_date !== undefined) {
     fireEvent.change(screen.getByLabelText('Due Date'), { target: { value: values.due_date } });
   }
+  if (values.user_name !== undefined) {
+    fireEvent.change(screen.getByLabelText('User Name'), { target: { value: values.user_name } });
+  }
 }
 
-// Test Case 1: Create Task Successfully With All Required Fields
-test('Create Task Successfully With All Required Fields', async () => {
+// Test Case 1: Create task with all required fields successfully
+test('Create task with all required fields successfully', async () => {
   const mockOnSubmit = jest.fn().mockResolvedValue(undefined);
   render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
-  fillRequiredFields({
+  fillFields({
     title: 'Test Task',
     description: 'Test Description',
     priority: 'High',
     category: 'Work',
     due_date: '2099-12-31',
+    user_name: 'Alice'
   });
   fireEvent.click(screen.getByText('Save Task'));
-  await waitFor(() => expect(mockOnSubmit).toHaveBeenCalledWith(expect.objectContaining({
-    title: 'Test Task',
-    description: 'Test Description',
-    priority: 'High',
-    category: 'Work',
-    due_date: '2099-12-31',
-    completed: false,
-  })));
+  await waitFor(() =>
+    expect(mockOnSubmit).toHaveBeenCalledWith(expect.objectContaining({
+      title: 'Test Task',
+      description: 'Test Description',
+      priority: 'High',
+      category: 'Work',
+      due_date: '2099-12-31',
+      user_name: 'Alice'
+    }))
+  );
+  expect(screen.queryByText(/required/i)).not.toBeInTheDocument();
 });
 
-// Test Case 2: Submission Fails When Title Is Missing
-test('Submission Fails When Title Is Missing', async () => {
+// Test Case 2: Validation error when title is missing
+test('Validation error when title is missing', async () => {
   const mockOnSubmit = jest.fn();
   render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
-  fillRequiredFields({
+  fillFields({
     description: 'Test Description',
     priority: 'High',
     category: 'Work',
     due_date: '2099-12-31',
+    user_name: 'Alice'
   });
   fireEvent.click(screen.getByText('Save Task'));
   await waitFor(() => expect(mockOnSubmit).not.toHaveBeenCalled());
-  expect(screen.getByPlaceholderText('What needs to be done?')).toBeInvalid();
+  expect(screen.getByText(/title.*required/i)).toBeInTheDocument();
 });
 
-// Test Case 3: Submission Fails When Description Is Missing
-test('Submission Fails When Description Is Missing', async () => {
+// Test Case 3: Validation error when description is missing
+test('Validation error when description is missing', async () => {
   const mockOnSubmit = jest.fn();
   render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
-  fillRequiredFields({
+  fillFields({
     title: 'Test Task',
     priority: 'High',
     category: 'Work',
     due_date: '2099-12-31',
+    user_name: 'Alice'
   });
-  fireEvent.click(screen.getByText('Save Task'));
-  await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
-});
-
-// Test Case 4: Submission Fails When Priority Is Missing
-test('Submission Fails When Priority Is Missing', async () => {
-  const mockOnSubmit = jest.fn();
-  render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
-  fillRequiredFields({
-    title: 'Test Task',
-    description: 'Test Description',
-    category: 'Work',
-    due_date: '2099-12-31',
-  });
-  fireEvent.click(screen.getByText('Save Task'));
-  await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
-});
-
-// Test Case 5: Submission Fails When Due Date Is Missing
-test('Submission Fails When Due Date Is Missing', async () => {
-  const mockOnSubmit = jest.fn();
-  render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
-  fillRequiredFields({
-    title: 'Test Task',
-    description: 'Test Description',
-    priority: 'High',
-    category: 'Work',
-  });
-  fireEvent.click(screen.getByText('Save Task'));
-  await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
-});
-
-// Test Case 6: Submission Fails When User Name Is Missing
-test('Submission Fails When User Name Is Missing', async () => {
-  // No user_name field in TaskForm, so this test is not applicable.
-  // If user_name is required, TaskForm should be updated to include it.
-  expect(true).toBe(true);
-});
-
-// Test Case 7: Submission Fails With All Fields Blank
-test('Submission Fails With All Fields Blank', async () => {
-  const mockOnSubmit = jest.fn();
-  render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
   fireEvent.click(screen.getByText('Save Task'));
   await waitFor(() => expect(mockOnSubmit).not.toHaveBeenCalled());
-  expect(screen.getByPlaceholderText('What needs to be done?')).toBeInvalid();
+  expect(screen.getByText(/description.*required/i)).toBeInTheDocument();
 });
 
-// Test Case 8: Priority Options Render Correctly
-test('Priority Options Render Correctly', () => {
-  render(<TaskForm onSubmit={jest.fn()} onCancel={() => {}} />);
-  const prioritySelect = screen.getByLabelText('Priority');
-  expect(prioritySelect).toHaveTextContent('Low');
-  expect(prioritySelect).toHaveTextContent('Medium');
-  expect(prioritySelect).toHaveTextContent('High');
-});
-
-// Test Case 9: Due Date Must Be In The Future
-test('Due Date Must Be In The Future', async () => {
+// Test Case 4: Validation error when priority is missing
+test('Validation error when priority is missing', async () => {
   const mockOnSubmit = jest.fn();
   render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
-  fillRequiredFields({
+  fillFields({
+    title: 'Test Task',
+    description: 'Test Description',
+    category: 'Work',
+    due_date: '2099-12-31',
+    user_name: 'Alice'
+  });
+  fireEvent.click(screen.getByText('Save Task'));
+  await waitFor(() => expect(mockOnSubmit).not.toHaveBeenCalled());
+  expect(screen.getByText(/priority.*required/i)).toBeInTheDocument();
+});
+
+// Test Case 5: Validation error when due date is missing
+test('Validation error when due date is missing', async () => {
+  const mockOnSubmit = jest.fn();
+  render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
+  fillFields({
     title: 'Test Task',
     description: 'Test Description',
     priority: 'High',
     category: 'Work',
-    due_date: '2000-01-01',
+    user_name: 'Alice'
   });
   fireEvent.click(screen.getByText('Save Task'));
-  await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
+  await waitFor(() => expect(mockOnSubmit).not.toHaveBeenCalled());
+  expect(screen.getByText(/due date.*required/i)).toBeInTheDocument();
 });
 
-// Test Case 10: Title Field Accepts Maximum Allowed Length
-test('Title Field Accepts Maximum Allowed Length', async () => {
-  const mockOnSubmit = jest.fn().mockResolvedValue(undefined);
+// Test Case 6: Validation error when user_name is missing
+test('Validation error when user_name is missing', async () => {
+  const mockOnSubmit = jest.fn();
   render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
-  const maxTitle = 'T'.repeat(255);
-  fillRequiredFields({
-    title: maxTitle,
+  fillFields({
+    title: 'Test Task',
     description: 'Test Description',
     priority: 'High',
     category: 'Work',
-    due_date: '2099-12-31',
+    due_date: '2099-12-31'
   });
   fireEvent.click(screen.getByText('Save Task'));
-  await waitFor(() => expect(mockOnSubmit).toHaveBeenCalledWith(expect.objectContaining({
-    title: maxTitle,
-  })));
+  await waitFor(() => expect(mockOnSubmit).not.toHaveBeenCalled());
+  expect(screen.getByText(/user name.*required/i)).toBeInTheDocument();
 });
 
-// Test Case 11: Category Field Is Optional
-test('Category Field Is Optional', async () => {
+// Test Case 7: Successfully create task without category
+test('Successfully create task without category', async () => {
   const mockOnSubmit = jest.fn().mockResolvedValue(undefined);
   render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
-  fillRequiredFields({
+  fillFields({
     title: 'Test Task',
     description: 'Test Description',
     priority: 'High',
     due_date: '2099-12-31',
+    user_name: 'Alice'
   });
   fireEvent.click(screen.getByText('Save Task'));
-  await waitFor(() => expect(mockOnSubmit).toHaveBeenCalledWith(expect.objectContaining({
-    category: undefined,
-  })));
+  await waitFor(() =>
+    expect(mockOnSubmit).toHaveBeenCalledWith(expect.objectContaining({
+      title: 'Test Task',
+      description: 'Test Description',
+      priority: 'High',
+      due_date: '2099-12-31',
+      user_name: 'Alice',
+      category: undefined
+    }))
+  );
+  expect(screen.queryByText(/required/i)).not.toBeInTheDocument();
 });
 
-// Test Case 12: All Fields Render On Form
-test('All Fields Render On Form', () => {
+// Test Case 8: Render all form fields
+test('Render all form fields', () => {
   render(<TaskForm onSubmit={jest.fn()} onCancel={() => {}} />);
   expect(screen.getByPlaceholderText('What needs to be done?')).toBeInTheDocument();
   expect(screen.getByPlaceholderText('Details...')).toBeInTheDocument();
   expect(screen.getByLabelText('Priority')).toBeInTheDocument();
   expect(screen.getByLabelText('Category')).toBeInTheDocument();
   expect(screen.getByLabelText('Due Date')).toBeInTheDocument();
+  expect(screen.getByLabelText('User Name')).toBeInTheDocument();
 });
 
-// Test Case 13: Validation Error Is Cleared After Correct Input
-test('Validation Error Is Cleared After Correct Input', async () => {
+// Test Case 9: Validation error for invalid priority value
+test('Validation error for invalid priority value', async () => {
+  const mockOnSubmit = jest.fn();
+  render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
+  fillFields({
+    title: 'Test Task',
+    description: 'Test Description',
+    priority: 'InvalidPriority',
+    due_date: '2099-12-31',
+    user_name: 'Alice'
+  });
+  fireEvent.click(screen.getByText('Save Task'));
+  await waitFor(() => expect(mockOnSubmit).not.toHaveBeenCalled());
+  expect(screen.getByText(/priority.*invalid/i)).toBeInTheDocument();
+});
+
+// Test Case 10: Validation error for past due date
+test('Validation error for past due date', async () => {
+  const mockOnSubmit = jest.fn();
+  render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
+  fillFields({
+    title: 'Test Task',
+    description: 'Test Description',
+    priority: 'High',
+    due_date: '2000-01-01',
+    user_name: 'Alice'
+  });
+  fireEvent.click(screen.getByText('Save Task'));
+  await waitFor(() => expect(mockOnSubmit).not.toHaveBeenCalled());
+  expect(screen.getByText(/due date.*past/i)).toBeInTheDocument();
+});
+
+// Test Case 11: Validation error for title exceeding maximum length
+test('Validation error for title exceeding maximum length', async () => {
+  const mockOnSubmit = jest.fn();
+  render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
+  const longTitle = 'T'.repeat(256);
+  fillFields({
+    title: longTitle,
+    description: 'Test Description',
+    priority: 'High',
+    due_date: '2099-12-31',
+    user_name: 'Alice'
+  });
+  fireEvent.click(screen.getByText('Save Task'));
+  await waitFor(() => expect(mockOnSubmit).not.toHaveBeenCalled());
+  expect(screen.getByText(/title.*maximum/i)).toBeInTheDocument();
+});
+
+// Test Case 12: Validation errors for blank form submission
+test('Validation errors for blank form submission', async () => {
   const mockOnSubmit = jest.fn();
   render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
   fireEvent.click(screen.getByText('Save Task'));
-  expect(screen.getByPlaceholderText('What needs to be done?')).toBeInvalid();
-  fillRequiredFields({ title: 'Valid Title' });
-  expect(screen.getByPlaceholderText('What needs to be done?')).not.toBeInvalid();
+  await waitFor(() => expect(mockOnSubmit).not.toHaveBeenCalled());
+  expect(screen.getByText(/title.*required/i)).toBeInTheDocument();
+  expect(screen.getByText(/description.*required/i)).toBeInTheDocument();
+  expect(screen.getByText(/priority.*required/i)).toBeInTheDocument();
+  expect(screen.getByText(/due date.*required/i)).toBeInTheDocument();
+  expect(screen.getByText(/user name.*required/i)).toBeInTheDocument();
 });
 
-// Test Case 14: Submit Button Is Disabled When Form Is Invalid
-test('Submit Button Is Disabled When Form Is Invalid', () => {
-  render(<TaskForm onSubmit={jest.fn()} onCancel={() => {}} />);
-  const submitBtn = screen.getByText('Save Task');
-  // No disabled logic in TaskForm, so this test is not applicable.
-  expect(submitBtn).not.toBeDisabled();
-});
-
-// Test Case 15: Form Accepts Special Characters In Fields
-test('Form Accepts Special Characters In Fields', async () => {
-  const mockOnSubmit = jest.fn().mockResolvedValue(undefined);
+// Test Case 13: Validation error for required fields containing only whitespace
+test('Validation error for required fields containing only whitespace', async () => {
+  const mockOnSubmit = jest.fn();
   render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
-  fillRequiredFields({
-    title: '!@#$%^&*()_+{}:"<>?',
-    description: '[];\',./`~',
-    priority: 'Medium',
-    category: 'Personal',
+  fillFields({
+    title: '   ',
+    description: '   ',
+    priority: 'High',
     due_date: '2099-12-31',
+    user_name: '   '
   });
   fireEvent.click(screen.getByText('Save Task'));
-  await waitFor(() => expect(mockOnSubmit).toHaveBeenCalledWith(expect.objectContaining({
-    title: '!@#$%^&*()_+{}:"<>?',
-    description: '[];\',./`~',
-  })));
+  await waitFor(() => expect(mockOnSubmit).not.toHaveBeenCalled());
+  expect(screen.getByText(/title.*required/i)).toBeInTheDocument();
+  expect(screen.getByText(/description.*required/i)).toBeInTheDocument();
+  expect(screen.getByText(/user name.*required/i)).toBeInTheDocument();
 });
 
-// Test Case 16: Form Resets After Successful Submission
-test('Form Resets After Successful Submission', async () => {
+// Test Case 14: Reset form after successful submission
+test('Reset form after successful submission', async () => {
   const mockOnSubmit = jest.fn().mockResolvedValue(undefined);
   render(<TaskForm onSubmit={mockOnSubmit} onCancel={() => {}} />);
-  fillRequiredFields({
+  fillFields({
     title: 'Reset Task',
     description: 'Reset Description',
     priority: 'Low',
     category: 'Study',
     due_date: '2099-12-31',
+    user_name: 'Alice'
   });
   fireEvent.click(screen.getByText('Save Task'));
   await waitFor(() => expect(mockOnSubmit).toHaveBeenCalled());
-  // No reset logic in TaskForm, so this test is not applicable.
-  expect(screen.getByPlaceholderText('What needs to be done?')).toHaveValue('Reset Task');
+  expect(screen.getByPlaceholderText('What needs to be done?')).toHaveValue('');
+  expect(screen.getByPlaceholderText('Details...')).toHaveValue('');
+  expect(screen.getByLabelText('Priority')).toHaveValue('');
+  expect(screen.getByLabelText('Category')).toHaveValue('');
+  expect(screen.getByLabelText('Due Date')).toHaveValue('');
+  expect(screen.getByLabelText('User Name')).toHaveValue('');
+});
+
+// Test Case 15: Error messages are displayed for invalid submission
+test('Error messages are displayed for invalid submission', async () => {
+  render(<TaskForm onSubmit={jest.fn()} onCancel={() => {}} />);
+  fireEvent.click(screen.getByText('Save Task'));
+  expect(screen.getByText(/title.*required/i)).toBeInTheDocument();
+  expect(screen.getByText(/description.*required/i)).toBeInTheDocument();
+  expect(screen.getByText(/priority.*required/i)).toBeInTheDocument();
+  expect(screen.getByText(/due date.*required/i)).toBeInTheDocument();
+  expect(screen.getByText(/user name.*required/i)).toBeInTheDocument();
 });
