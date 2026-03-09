@@ -1,0 +1,78 @@
+{
+  "task_5910273648_20240609123001": {
+    "implementation": [
+      {
+        "How_is_it_connected_to_implementation": "UI component that collects task details (title, description, priority, due date) from the user and triggers the task creation process via onSubmit.",
+        "file_path": "frontend/src/components/TaskForm.tsx",
+        "id": "ui_task_form_component",
+        "name": "TaskForm",
+        "pseudo_code": "Render a form with fields for title, description, priority, category, and due date\nOn form submission:\n    IF all required fields are filled\n        Call onSubmit with the task details\n    ELSE\n        Show validation errors",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Function that sends a POST request to the backend to create a new task with the provided details.",
+        "file_path": "frontend/src/api.ts",
+        "id": "frontend_create_task_api_function",
+        "name": "api.createTask",
+        "pseudo_code": "Receive task details as input\nSend POST request to /tasks endpoint with task data\nIF response is successful\n    Return created task\nELSE\n    Throw error",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "FastAPI endpoint that receives task creation requests, validates input, and delegates creation to the database layer.",
+        "file_path": "backend/main.py",
+        "id": "backend_create_task_endpoint",
+        "name": "create_task",
+        "pseudo_code": "On POST /tasks with TaskCreate payload:\n    Call database.add_task with the task data\n    Return the created task",
+        "type": "endpoint"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Function that generates a unique task ID, stores the new task in the database, and returns the created task.",
+        "file_path": "backend/database.py",
+        "id": "backend_add_task_function",
+        "name": "add_task",
+        "pseudo_code": "Get current list of tasks\nGenerate unique ID for new task\nCreate Task object with provided details\nAppend new task to list\nSave updated list to database\nReturn new task",
+        "type": "function"
+      }
+    ],
+    "missing_implementations": [
+      "User_name field is not present in the UI form, frontend API, backend endpoint, or database logic. The feature does not allow users to specify or capture user_name for new tasks."
+    ]
+  },
+  "task_9532704152_20240609123001": {
+    "implementation": [
+      {
+        "How_is_it_connected_to_implementation": "Provides the Edit button in the task list UI. When clicked, triggers the editing flow for a specific task by invoking the onEdit callback.",
+        "file_path": "frontend/src/components/TaskItem.tsx",
+        "id": "ui_taskitem_edit_button",
+        "name": "TaskItem Edit Button",
+        "pseudo_code": "IF user clicks Edit button on a task\n    CALL onEdit(task)\n    Open TaskForm with task details for editing",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Displays a form pre-filled with the selected task's details, allowing the user to modify and submit changes. Handles form submission for editing.",
+        "file_path": "frontend/src/components/TaskForm.tsx",
+        "id": "ui_taskform_edit_mode",
+        "name": "TaskForm (Edit Mode)",
+        "pseudo_code": "IF initialTask is provided\n    Display form with initialTask details\n    IF user submits form\n        CALL onSubmit(updatedTaskDetails)\nELSE\n    Display empty form for new task",
+        "type": "component"
+      },
+      {
+        "How_is_it_connected_to_implementation": "API endpoint that receives updated task data from the frontend and processes the update request. Calls the backend function to update the task.",
+        "file_path": "backend/main.py",
+        "id": "api_update_task_endpoint",
+        "name": "update_task endpoint",
+        "pseudo_code": "ON PUT /tasks/{task_id} with updated task data\n    CALL database.update_task(task_id, task)\n    IF updated_task is None\n        RETURN 404 Task not found\n    ELSE\n        RETURN updated_task",
+        "type": "endpoint"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles the actual update of the task in the database/storage. Finds the task by ID, updates its details, saves changes, and returns the updated task.",
+        "file_path": "backend/database.py",
+        "id": "backend_update_task_function",
+        "name": "update_task",
+        "pseudo_code": "FOR each task in tasks\n    IF task.id == task_id\n        updated_task = Task(id=task_id, **task_update)\n        Replace task with updated_task in tasks\n        Save tasks\n        RETURN updated_task\nRETURN None if not found",
+        "type": "function"
+      }
+    ],
+    "missing_implementations": []
+  }
+}
